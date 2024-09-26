@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bz1-stock-scraper", "src\bz1-stock-scraper.csproj", "{7A541A0D-0C6B-40F6-80C2-BD3E2D2F755D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3DA0B6E0-0A78-4A7F-AF11-D68263E45D34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A541A0D-0C6B-40F6-80C2-BD3E2D2F755D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A541A0D-0C6B-40F6-80C2-BD3E2D2F755D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A541A0D-0C6B-40F6-80C2-BD3E2D2F755D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A541A0D-0C6B-40F6-80C2-BD3E2D2F755D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7A541A0D-0C6B-40F6-80C2-BD3E2D2F755D} = {3DA0B6E0-0A78-4A7F-AF11-D68263E45D34}
+	EndGlobalSection
+EndGlobal
