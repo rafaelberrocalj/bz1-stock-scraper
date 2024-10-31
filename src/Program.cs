@@ -31,7 +31,9 @@ await page.SetViewportAsync(new ViewPortOptions
 var stockScraperBuilders = new IStockScraperBuilder[]
 {
     new Investidor10ComBrScraper().WithFii("BARI11").Build(),
-    new MundoFiiComScraper().WithFii("BARI11").Build()
+    new MundoFiiComScraper().WithFii("BARI11").Build(),
+
+    new StatusInvestComBrScraper().WithFii("ICRI11").Build()
 };
 
 foreach (var stockScraperBuilder in stockScraperBuilders)
@@ -49,7 +51,7 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     {
         var scrapedSelectorValue = htmlDocument.DocumentNode.SelectSingleNode(selector.Value).InnerText;
 
-        Console.WriteLine($"endpoint:{stockScraperBuilder.GetEndpoint()} {selector.Key}:{scrapedSelectorValue}");
+        Console.WriteLine($"ticker:{stockScraperBuilder.GetTicker()} endpoint:{stockScraperBuilder.GetEndpoint()} {selector.Key}:{scrapedSelectorValue}");
     }
 }
 
