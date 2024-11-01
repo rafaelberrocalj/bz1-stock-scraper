@@ -5,6 +5,6 @@
         public string GetTicker();
         public string GetEndpoint();
         public string GetWaitForSelector();
-        public Dictionary<string, string> GetSelectors();
+        public List<KeyValuePair<string, string>> GetSelectors();
     }
 }

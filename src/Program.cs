@@ -47,7 +47,9 @@ var stockScraperBuilders =
     .Union(statusInvestComBrFIInfrasScrapers)
     .Union(statusInvestComBrFIAgrosScrapers);
 
-var tickersData = new Dictionary<string, Dictionary<string, string>>();
+var tickersData = new Dictionary<string, Dictionary<string, object>>();
+
+var emptyScrapedValue = "-";
 
 foreach (var stockScraperBuilder in stockScraperBuilders)
 {
@@ -63,21 +65,31 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     var htmlDocument = new HtmlDocument();
     htmlDocument.LoadHtml(html);
 
-    var tickerData = new Dictionary<string, string>();
+    var tickerData = new Dictionary<string, object>();
 
     var selectors = stockScraperBuilder.GetSelectors();
 
     foreach (var selector in selectors)
     {
-        string scrapedSelectorValue = "-";
+        object scrapedSelectorValue = emptyScrapedValue;
 
-        var singleNode = htmlDocument.DocumentNode.SelectSingleNode(selector.Value);
-        if (singleNode != null)
+        var htmlDocumentSingleNode = htmlDocument.DocumentNode.SelectSingleNode(selector.Value);
+        if (htmlDocumentSingleNode != null)
         {
-            scrapedSelectorValue = singleNode.InnerText;
+            if (double.TryParse(htmlDocumentSingleNode.InnerText, out double val))
+            {
+                scrapedSelectorValue = val;
+            }
+            else
+            {
+                scrapedSelectorValue = htmlDocumentSingleNode.InnerText;
+            }
         }
 
-        tickerData.Add(selector.Key, scrapedSelectorValue);
+        if (!tickerData.ContainsKey(selector.Key) || scrapedSelectorValue.ToString() != emptyScrapedValue)
+        {
+            tickerData[selector.Key] = scrapedSelectorValue;
+        }
 
         Console.WriteLine($"{selector.Key}:{scrapedSelectorValue}");
     }
