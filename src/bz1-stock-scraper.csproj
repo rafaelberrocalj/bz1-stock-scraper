@@ -6,6 +6,7 @@
     <RootNamespace>bz1.stockscraper</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>26324d89-0907-4c3c-bfd6-934f7b04bd87</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
