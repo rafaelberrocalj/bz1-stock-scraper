@@ -5,22 +5,25 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Run
-      run: cd src/bin/Debug/net8.0 && dotnet bz1-stock-scraper.dll
+      - uses: actions/checkout@v4
+      - name: install puppeteer libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Run
+        run: cd src/bin/Debug/net8.0 && dotnet bz1-stock-scraper.dll

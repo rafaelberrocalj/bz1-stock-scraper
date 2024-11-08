@@ -26,8 +26,12 @@ await new BrowserFetcher().DownloadAsync();
 
 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
 {
-    Headless = true//,
-    //Args = ["--start-maximized"]
+    Headless = true,
+    Args = [
+        //"--start-maximized",
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
+    ]
 });
 
 await using var page = await browser.NewPageAsync();
