@@ -1,4 +1,5 @@
-﻿using bz1.stockscraper.Models.Scrapers;
+﻿using bz1.stockscraper.Models.Builders;
+using bz1.stockscraper.Models.Scrapers;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Configuration;
 using PuppeteerSharp;
@@ -22,8 +23,10 @@ var tickersConfigurationListFIIs = tickersConfigurationSectionFIIs.Get<List<stri
 var tickersConfigurationListFIInfras = tickersConfigurationSectionFIInfras.Get<List<string>>()!;
 var tickersConfigurationListFIAgros = tickersConfigurationSectionFIAgros.Get<List<string>>()!;
 
+Console.WriteLine($"BrowserFetcher.DownloadAsync");
 await new BrowserFetcher().DownloadAsync();
 
+Console.WriteLine($"Puppeteer.LaunchAsync");
 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
 {
     Headless = true,
@@ -34,14 +37,17 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
     ]
 });
 
+Console.WriteLine($"browser.NewPageAsync");
 await using var page = await browser.NewPageAsync();
 
+Console.WriteLine($"page.SetViewportAsync");
 await page.SetViewportAsync(new ViewPortOptions
 {
     Width = 1280,
     Height = 1024
 });
 
+Console.WriteLine($"page.SetUserAgentAsync");
 await page.SetUserAgentAsync("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36");
 
 var statusInvestComBrFIIsScrapers = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
@@ -64,9 +70,12 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine();
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
+    Console.WriteLine($"page.GoToAsync");
     await page.GoToAsync(stockScraperBuilder.GetEndpoint());
+    Console.WriteLine($"page.WaitForSelectorAsync");
     await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
 
+    Console.WriteLine($"page.GetContentAsync");
     var html = await page.GetContentAsync();
     var htmlDocument = new HtmlDocument();
     htmlDocument.LoadHtml(html);
