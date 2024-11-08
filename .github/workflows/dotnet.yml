@@ -23,4 +23,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Run
-      run: dotnet run
+      run: cd src/bin/Debug/net8.0 && dotnet bz1-stock-scraper.dll
