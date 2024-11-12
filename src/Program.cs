@@ -1,5 +1,4 @@
-﻿using bz1.stockscraper.Models.Builders;
-using bz1.stockscraper.Models.Scrapers;
+﻿using bz1.stockscraper.Models.Scrapers;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Configuration;
 using PuppeteerSharp;
@@ -116,8 +115,13 @@ await page.DisposeAsync();
 await browser.CloseAsync();
 await browser.DisposeAsync();
 
+var jsonSerializerOptions = new JsonSerializerOptions
+{
+    WriteIndented = true
+};
+
 var tickersFilePath = Path.Combine(Directory.GetCurrentDirectory(), "tickersData.json");
-var tickersFileContent = JsonSerializer.Serialize(tickersData);
+var tickersFileContent = JsonSerializer.Serialize(tickersData, jsonSerializerOptions);
 
 File.WriteAllText(tickersFilePath, tickersFileContent);
 
