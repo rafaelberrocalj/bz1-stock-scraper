@@ -32,7 +32,8 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
     Args = [
         "--no-sandbox",
         "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage"
+        "--disable-dev-shm-usage",
+        "--disable-gpu"
     ]
 });
 
