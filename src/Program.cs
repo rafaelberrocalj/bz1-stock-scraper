@@ -30,7 +30,8 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
 {
     Headless = true,
     Args = [
-        "--no-sandbox"
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
     ]
 });
 
