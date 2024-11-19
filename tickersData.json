@@ -1,62 +1,50 @@
 {
   "BARI11": {
     "pvp": 0.78,
-    "value": 71.92,
     "dividend": 0.71
   },
   "BCRI11": {
     "pvp": 0.72,
-    "value": 62.94,
     "dividend": 0.84
   },
   "CYCR11": {
     "pvp": 0.93,
-    "value": 8.69,
     "dividend": 0.09
   },
   "ICRI11": {
     "pvp": 0.94,
-    "value": 94.45,
     "dividend": 1.45
   },
   "KNSC11": {
     "pvp": 0.94,
-    "value": 8.42,
     "dividend": 0.08
   },
   "MFII11": {
     "pvp": 0.88,
-    "value": 94.69,
     "dividend": 1.17
   },
   "TGAR11": {
     "pvp": 0.88,
-    "value": 98.73,
     "dividend": 1.15
   },
   "URPR11": {
     "pvp": 0.62,
-    "value": 62.14,
     "dividend": 0.87
   },
   "VGHF11": {
     "pvp": 0.88,
-    "value": 7.82,
     "dividend": 0.09
   },
   "VSLH11": {
     "pvp": 0.3,
-    "value": 3.28,
     "dividend": 0.04
   },
   "IFRI11": {
     "pvp": "-",
-    "value": 97.32,
     "dividend": 1.03
   },
   "RURA11": {
     "pvp": 0.75,
-    "value": 7.55,
     "dividend": 0.06
   }
 }
