@@ -8,5 +8,11 @@ const puppeteer = require("puppeteer");
   });
   await page.pdf({ path: "test.pdf", format: "a4" });
 
+  var text = await page.$x(
+    "/html/body/center/table/tbody/tr[3]/td/table/tbody/tr[1]"
+  );
+
+  console.log("text is:", text);
+
   await browser.close();
 })();
