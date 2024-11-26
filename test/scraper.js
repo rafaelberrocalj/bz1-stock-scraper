@@ -151,6 +151,10 @@ class StatusInvestComBrScraper {
       //await page.waitForSelector(waitForSelector);
       console.log(`\nloaded page for ${ticker} from ${endpoint}`);
 
+      let pageContent = await page.content();
+
+      console.info("pageContent", pageContent);
+
       const tickerData = {};
 
       for (const { name, selector } of selectors) {
