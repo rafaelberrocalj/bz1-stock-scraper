@@ -146,9 +146,10 @@ class StatusInvestComBrScraper {
 
     try {
       await page.goto(endpoint, {
-        //waitUntil: "networkidle2",
+        waitUntil: "networkidle2",
       });
-      await page.waitForSelector(waitForSelector);
+      //await page.waitForSelector(waitForSelector);
+      console.log(`\nloaded page for ${ticker} from ${endpoint}`);
 
       const tickerData = {};
 
