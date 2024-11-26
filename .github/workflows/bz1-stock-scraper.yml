@@ -1,7 +1,4 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
+name: bz1-stock-scraper
 
 on:
   push:
@@ -18,13 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/checkout@v3
       - name: Run test
         uses: tj-actions/puppeteer@v5
         id: puppeteer-test
         with:
-          files: |
-            test/test.js
+          files: test/test.js
 
       - name: Copy test output
         uses: tj-actions/docker-cp@v2
@@ -35,6 +30,7 @@ jobs:
 
       - name: Display contents of test.pdf # <-- Replace this file name if copied or Remove this step
         run: cat tickersData.json # <-- Replace this file name if copied or Remove this step
+
 
       # - name: bz1-stock-scraper
       #   run: |
