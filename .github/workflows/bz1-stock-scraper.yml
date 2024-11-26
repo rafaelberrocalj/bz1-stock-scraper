@@ -17,14 +17,11 @@ jobs:
 
       - name: Run test
         uses: tj-actions/puppeteer@v5
-        with:
-          files: test/test.js
-
-      - name: Run test
-        uses: tj-actions/puppeteer@v5
         id: puppeteer-test
         with:
-          files: test/scraper.js
+          files: |
+            test/test.js
+            test/scraper.js
 
       - name: Copy test output
         uses: tj-actions/docker-cp@v2
