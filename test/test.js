@@ -92,11 +92,14 @@ class StatusInvestComBrScraper {
     builder
       .addSelector(
         "pvp",
-        "body main div:nth-child(2) div:nth-child(5) div strong"
+        "/html/body/main/div[2]/div[5]/div/div[2]/div/div[1]/strong",
+        "/html/body/main/div[2]/div[4]/div/div[2]/div/div[1]/strong"
       )
       .addSelector(
         "dividend",
-        "body main div:nth-child(2) div:nth-child(8) div div table tbody tr:nth-child(1) td:nth-child(4)"
+        "/html/body/main/div[2]/div[8]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]",
+        "/html/body/main/div[2]/div[7]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]",
+        "/html/body/main/div[2]/div[4]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]"
       );
 
     return builder;
@@ -106,7 +109,7 @@ class StatusInvestComBrScraper {
 // Função principal
 (async () => {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
@@ -139,21 +142,27 @@ class StatusInvestComBrScraper {
   for (const scraper of scrapers) {
     const { ticker, endpoint, waitForSelector, selectors } = scraper;
 
-    console.log(`Scraping data for ${ticker} from ${endpoint}`);
+    console.log(`\nScraping data for ${ticker} from ${endpoint}`);
+
     try {
-      await page.goto(endpoint);
+      await page.goto(endpoint, {
+        //waitUntil: "networkidle2",
+      });
       await page.waitForSelector(waitForSelector);
 
       const tickerData = {};
 
       for (const { name, selector } of selectors) {
+        console.log("\nfor iteration", ticker, name, selector);
         try {
-          const value = await page.$eval(selector, (el) =>
-            el.textContent.trim()
-          );
+          let value = await (
+            await page.$(`::-p-xpath(${selector})`)
+          ).evaluate((node) => node.innerText);
           tickerData[name] = value;
-        } catch {
-          tickerData[name] = "-";
+          console.log(`name=${ticker};value=${value}`);
+        } catch (er) {
+          //tickerData[name] = "-";
+          console.log(`name=${ticker};er=${er}`);
         }
       }
 
