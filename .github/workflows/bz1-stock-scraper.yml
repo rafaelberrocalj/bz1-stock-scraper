@@ -19,7 +19,7 @@ jobs:
         uses: tj-actions/puppeteer@v5
         id: puppeteer-test
         with:
-          files: test/test.js
+          files: test/scraper.js
 
       - name: Copy test output
         uses: tj-actions/docker-cp@v2
