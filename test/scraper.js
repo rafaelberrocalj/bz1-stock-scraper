@@ -175,8 +175,11 @@ class StatusInvestComBrScraper {
 
   await browser.close();
 
+  const tickersDataJson = JSON.stringify(tickersData);
+  console.info("tickersDataJson", tickersDataJson);
+
   // Salvar os resultados em um arquivo JSON
   const outputPath = path.join(__dirname, "tickersData.json");
-  fs.writeFileSync(outputPath, JSON.stringify(tickersData, null, 2));
+  fs.writeFileSync(outputPath, tickersDataJson);
   console.log(`Scraping completed. Data saved to ${outputPath}`);
 })();

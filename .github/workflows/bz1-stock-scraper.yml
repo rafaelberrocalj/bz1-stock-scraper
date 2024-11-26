@@ -31,7 +31,7 @@ jobs:
           destination: tickersData.json # <-- Replace this input if copied or Remove this step
 
       - name: Display contents of test.pdf # <-- Replace this file name if copied or Remove this step
-        run: cat tickersData.json # <-- Replace this file name if copied or Remove this step
+        run: cat test/tickersData.json # <-- Replace this file name if copied or Remove this step
 
 
       # - name: bz1-stock-scraper
