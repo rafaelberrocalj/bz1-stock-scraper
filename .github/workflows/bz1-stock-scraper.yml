@@ -17,6 +17,11 @@ jobs:
 
       - name: Run test
         uses: tj-actions/puppeteer@v5
+        with:
+          files: test/test.js
+
+      - name: Run test
+        uses: tj-actions/puppeteer@v5
         id: puppeteer-test
         with:
           files: test/scraper.js
