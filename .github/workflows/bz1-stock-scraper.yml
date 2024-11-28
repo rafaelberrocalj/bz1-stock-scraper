@@ -8,30 +8,34 @@ jobs:
   build:
     runs-on: ubuntu-22.04
 
-    strategy:
-      matrix:
-        node-version: [22.x]
+    # strategy:
+    #   matrix:
+    #     node-version: [22.x]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run test
-        uses: tj-actions/puppeteer@v5
-        id: puppeteer-test
-        with:
-          files: |
-            test/test.js
-            test/scraper.js
+      - name: test
+        run: |
+          docker run -i --init --cap-add=SYS_ADMIN --rm ghcr.io/puppeteer/puppeteer:latest node -e "$(cat test/test.js)"
 
-      - name: Copy test output
-        uses: tj-actions/docker-cp@v2
-        with:
-          container: ${{ steps.puppeteer-test.outputs.container-id }}
-          source: ${{ steps.puppeteer-test.outputs.home }}/tickersData.json # <-- Replace this input if copied or Remove this step
-          destination: tickersData.json # <-- Replace this input if copied or Remove this step
+      # - name: Run test
+      #   uses: tj-actions/puppeteer@v5
+      #   id: puppeteer-test
+      #   with:
+      #     files: |
+      #       test/test.js
+      #       test/scraper.js
 
-      - name: Display contents of test.pdf # <-- Replace this file name if copied or Remove this step
-        run: cat test/tickersData.json # <-- Replace this file name if copied or Remove this step
+      # - name: Copy test output
+      #   uses: tj-actions/docker-cp@v2
+      #   with:
+      #     container: ${{ steps.puppeteer-test.outputs.container-id }}
+      #     source: ${{ steps.puppeteer-test.outputs.home }}/tickersData.json # <-- Replace this input if copied or Remove this step
+      #     destination: tickersData.json # <-- Replace this input if copied or Remove this step
+
+      # - name: Display contents of test.pdf # <-- Replace this file name if copied or Remove this step
+      #   run: cat test/tickersData.json # <-- Replace this file name if copied or Remove this step
 
 
       # - name: bz1-stock-scraper
