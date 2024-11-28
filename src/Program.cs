@@ -60,10 +60,10 @@ await page.SetViewportAsync(new ViewPortOptions
 });
 
 Console.WriteLine($"page.SetUserAgentAsync");
-await page.SetUserAgentAsync("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36");
+await page.SetUserAgentAsync("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
 
-Console.WriteLine($"page.GoToAsync=b3.com.br");
-await page.GoToAsync("https://www.b3.com.br/", null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
+Console.WriteLine($"page.GoToAsync=init");
+await page.GoToAsync("https://bot.sannysoft.com/", null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
 
 var statusInvestComBrFIIsScrapers = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
 var statusInvestComBrFIInfrasScrapers = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
