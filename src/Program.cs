@@ -22,8 +22,15 @@ var tickersConfigurationListFIIs = tickersConfigurationSectionFIIs.Get<List<stri
 var tickersConfigurationListFIInfras = tickersConfigurationSectionFIInfras.Get<List<string>>()!;
 var tickersConfigurationListFIAgros = tickersConfigurationSectionFIAgros.Get<List<string>>()!;
 
-Console.WriteLine($"BrowserFetcher.DownloadAsync");
-await new BrowserFetcher().DownloadAsync();
+try
+{
+    Console.WriteLine($"BrowserFetcher.DownloadAsync");
+    await new BrowserFetcher().DownloadAsync();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"error:{ex.Message}");
+}
 
 Console.WriteLine($"Puppeteer.LaunchAsync");
 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
