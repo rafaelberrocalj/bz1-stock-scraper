@@ -78,9 +78,9 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
     Console.WriteLine($"page.GoToAsync");
-    await page.GoToAsync(stockScraperBuilder.GetEndpoint());
+    await page.GoToAsync(stockScraperBuilder.GetEndpoint(), null, [WaitUntilNavigation.Networkidle2]);
     Console.WriteLine($"page.WaitForSelectorAsync");
-    await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
+    //await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
 
     Console.WriteLine($"page.GetContentAsync");
     var html = await page.GetContentAsync();
