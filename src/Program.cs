@@ -60,7 +60,7 @@ await page.SetViewportAsync(new ViewPortOptions
 });
 
 Console.WriteLine($"page.SetUserAgentAsync");
-await page.SetUserAgentAsync("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
+await page.SetUserAgentAsync("Mozilla/5.0 (iPhone; CPU iPhone OS 17_7_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1");
 
 Console.WriteLine($"page.GoToAsync=init");
 await page.GoToAsync("https://bot.sannysoft.com/", null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
