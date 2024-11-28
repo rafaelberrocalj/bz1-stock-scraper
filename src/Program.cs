@@ -12,6 +12,8 @@ var builder = new ConfigurationBuilder()
     .AddUserSecrets(Assembly.GetExecutingAssembly());
 var configuration = builder.Build();
 
+bool.TryParse(configuration["BROWSER_HEADLESS"] ?? "true", out bool BROWSER_HEADLESS);
+
 Console.WriteLine($"bz1-stock-scraper");
 
 var tickersConfigurationSectionFIIs = configuration.GetSection("Tickers:FIIs");
@@ -35,7 +37,7 @@ catch (Exception ex)
 Console.WriteLine($"Puppeteer.LaunchAsync");
 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
 {
-    Headless = false,
+    Headless = BROWSER_HEADLESS,
     Args = [
         "--no-sandbox",
         "--disable-setuid-sandbox",
