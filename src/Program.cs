@@ -78,12 +78,16 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
     Console.WriteLine($"page.GoToAsync");
-    await page.GoToAsync(stockScraperBuilder.GetEndpoint(), null, [WaitUntilNavigation.Networkidle2]);
+    var pageResponse = await page.GoToAsync(stockScraperBuilder.GetEndpoint(), null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
     Console.WriteLine($"page.WaitForSelectorAsync");
     //await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
 
+    Console.WriteLine($"pageResponse={pageResponse.Ok}");
+
     Console.WriteLine($"page.GetContentAsync");
     var html = await page.GetContentAsync();
+    Console.WriteLine($"html=${html}");
+
     var htmlDocument = new HtmlDocument();
     htmlDocument.LoadHtml(html);
 
@@ -134,6 +138,8 @@ var tickersFilePath = Path.Combine(Directory.GetCurrentDirectory(), "tickersData
 var tickersFileContent = JsonSerializer.Serialize(tickersData, jsonSerializerOptions);
 
 File.WriteAllText(tickersFilePath, tickersFileContent);
+
+Console.WriteLine($"tickersData.json={tickersFileContent}");
 
 Console.WriteLine();
 Console.WriteLine($"scraper done, exiting");
