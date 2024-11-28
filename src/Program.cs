@@ -60,6 +60,14 @@ await page.SetViewportAsync(new ViewPortOptions
     Height = 768
 });
 
+await page.SetJavaScriptEnabledAsync(true);
+await page.SetGeolocationAsync(new GeolocationOption
+{
+    Latitude = -20.8284294M,
+    Longitude = -49.5178194M,
+    Accuracy = 0.5M
+});
+
 Console.WriteLine($"page.SetUserAgentAsync");
 await page.SetUserAgentAsync("Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15");
 
@@ -87,9 +95,9 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
     Console.WriteLine($"page.GoToAsync");
-    var pageResponse = await page.GoToAsync(stockScraperBuilder.GetEndpoint(), null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
+    var pageResponse = await page.GoToAsync(stockScraperBuilder.GetEndpoint(), null, [WaitUntilNavigation.Networkidle2]);
     Console.WriteLine($"page.WaitForSelectorAsync");
-    //await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
+    await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
 
     Console.WriteLine($"pageResponse={pageResponse.Ok}");
 
