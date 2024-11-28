@@ -42,15 +42,16 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
-        "--disable-gpu"
+        "--disable-gpu",
+        "--start-fullscreen"
     ]
 });
 
-Console.WriteLine($"browser.NewPageAsync");
-await using var page = await browser.NewPageAsync();
+//Console.WriteLine($"browser.NewPageAsync");
+//await using var page = await browser.NewPageAsync();
 
-//Console.WriteLine($"browser.PagesAsync");
-//var page = (await browser.PagesAsync())[0];
+Console.WriteLine($"browser.PagesAsync");
+var page = (await browser.PagesAsync())[0];
 
 Console.WriteLine($"page.SetViewportAsync");
 await page.SetViewportAsync(new ViewPortOptions
@@ -60,10 +61,10 @@ await page.SetViewportAsync(new ViewPortOptions
 });
 
 Console.WriteLine($"page.SetUserAgentAsync");
-await page.SetUserAgentAsync("Mozilla/5.0 (iPhone; CPU iPhone OS 17_7_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1");
+await page.SetUserAgentAsync("Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15");
 
-Console.WriteLine($"page.GoToAsync=init");
-await page.GoToAsync("https://bot.sannysoft.com/", null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
+//Console.WriteLine($"page.GoToAsync=init");
+//await page.GoToAsync("about:config", null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
 
 var statusInvestComBrFIIsScrapers = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
 var statusInvestComBrFIInfrasScrapers = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
