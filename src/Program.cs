@@ -108,7 +108,7 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine($"page.GoToAsync");
     var pageResponse = await page.GoToAsync(stockScraperBuilder.GetEndpoint(), null, [WaitUntilNavigation.Networkidle2]);
     Console.WriteLine($"page.WaitForSelectorAsync");
-    await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
+    //await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
 
     Console.WriteLine($"pageResponse={pageResponse.Ok}");
 
