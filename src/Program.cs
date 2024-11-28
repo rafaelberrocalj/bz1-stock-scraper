@@ -68,19 +68,22 @@ await page.SetGeolocationAsync(new GeolocationOption
     Accuracy = 0.5M
 });
 
-Console.WriteLine($"page.SetUserAgentAsync");
-await page.SetUserAgentAsync("5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
+var userAgent = "5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 
-await page.EvaluateFunctionHandleAsync("() => { Object.defineProperty(navigator, 'webdriver', { get: () => false}); }");
-await page.EvaluateFunctionOnNewDocumentAsync("() => { window.navigator.chrome = { runtime: {} }; }");
+Console.WriteLine($"page.SetUserAgentAsync");
+await page.SetUserAgentAsync(userAgent);
+
+await page.EvaluateFunctionOnNewDocumentAsync("() => { window.navigator.chrome = { runtime: {} } }");
+await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'webdriver', { get: () => false }); }");
 await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'appCodeName', { get: () => 'Mozilla' }); }");
 await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'appName', { get: () => 'Netscape' }); }");
-await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'appVersion', { get: () => '5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36' }); }");
+await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'appVersion', { get: () => '" + userAgent + "' }); }");
+await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'vendor', { get: () => 'Google Inc.' }); }");
 await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'language', { get: () => 'en' }); }");
 await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'languages', { get: () => ['en', 'pt'] }); }");
 await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'platform', { get: () => 'Win32' }); }");
 await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'product', { get: () => 'Gecko' }); }");
-await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5, 6] }); }");
+await page.EvaluateFunctionOnNewDocumentAsync("() => { Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4] }); }");
 
 //Console.WriteLine($"page.GoToAsync=init");
 //await page.GoToAsync("about:config", null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
