@@ -46,11 +46,11 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
     ]
 });
 
-//Console.WriteLine($"browser.NewPageAsync");
-//await using var page = await browser.NewPageAsync();
+Console.WriteLine($"browser.NewPageAsync");
+await using var page = await browser.NewPageAsync();
 
-Console.WriteLine($"browser.PagesAsync");
-var page = (await browser.PagesAsync())[0];
+//Console.WriteLine($"browser.PagesAsync");
+//var page = (await browser.PagesAsync())[0];
 
 Console.WriteLine($"page.SetViewportAsync");
 await page.SetViewportAsync(new ViewPortOptions
@@ -62,11 +62,8 @@ await page.SetViewportAsync(new ViewPortOptions
 Console.WriteLine($"page.SetUserAgentAsync");
 await page.SetUserAgentAsync("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36");
 
-Console.WriteLine($".GoToAsync=b3.com.br");
-await page.GoToAsync(
-    "https://www.b3.com.br/?__cf_chl_tk=QZpvNEZAUiilHvuSVKxHRCKJpQZC7VRBqbHVTj.0GYc-1732757632-1.0.1.1-XgAZ5eMgM5n76rgeqfd8cJExyjhmEZThEGT35evPXeY",
-    null,
-    [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
+Console.WriteLine($"page.GoToAsync=b3.com.br");
+await page.GoToAsync("https://www.b3.com.br/", null, [WaitUntilNavigation.Networkidle0, WaitUntilNavigation.Networkidle2]);
 
 var statusInvestComBrFIIsScrapers = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
 var statusInvestComBrFIInfrasScrapers = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
