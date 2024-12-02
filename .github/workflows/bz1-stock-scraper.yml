@@ -1,0 +1,49 @@
+name: bz1-stock-scraper
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    # strategy:
+    #   matrix:
+    #     node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # - name: test
+      #   run: |
+      #     docker run -i --init --cap-add=SYS_ADMIN --rm ghcr.io/puppeteer/puppeteer:latest node -e "$(cat test/test.js)"
+
+      # - name: Run test
+      #   uses: tj-actions/puppeteer@v5
+      #   id: puppeteer-test
+      #   with:
+      #     files: |
+      #       test/test.js
+      #       test/scraper.js
+
+      # - name: Copy test output
+      #   uses: tj-actions/docker-cp@v2
+      #   with:
+      #     container: ${{ steps.puppeteer-test.outputs.container-id }}
+      #     source: ${{ steps.puppeteer-test.outputs.home }}/tickersData.json # <-- Replace this input if copied or Remove this step
+      #     destination: tickersData.json # <-- Replace this input if copied or Remove this step
+
+      # - name: Display contents of test.pdf # <-- Replace this file name if copied or Remove this step
+      #   run: cat test/tickersData.json # <-- Replace this file name if copied or Remove this step
+
+      - name: bz1-stock-scraper
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libnss3 lsb-release xdg-utils wget
+          sudo apt-get install -y libcurl3-gnutls libcurl3-nss libcurl4 libvulkan1
+          sudo apt-get install -y dotnet-sdk-8.0
+          dotnet build
+          dotnet publish -c Release -o appruntime
+          cd appruntime
+          dotnet bz1-stock-scraper.dll
