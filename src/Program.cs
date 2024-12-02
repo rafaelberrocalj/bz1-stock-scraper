@@ -42,16 +42,15 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
-        "--disable-gpu",
-        "--start-fullscreen"
+        "--disable-gpu"
     ]
 });
 
-//Console.WriteLine($"browser.NewPageAsync");
-//await using var page = await browser.NewPageAsync();
+Console.WriteLine($"browser.NewPageAsync");
+await using var page = await browser.NewPageAsync();
 
-Console.WriteLine($"browser.PagesAsync");
-var page = (await browser.PagesAsync())[0];
+//Console.WriteLine($"browser.PagesAsync");
+//var page = (await browser.PagesAsync())[0];
 
 Console.WriteLine($"page.SetViewportAsync");
 await page.SetViewportAsync(new ViewPortOptions
@@ -109,9 +108,9 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
     Console.WriteLine($"page.GoToAsync");
-    var pageResponse = await page.GoToAsync(stockScraperBuilder.GetEndpoint(), null, [WaitUntilNavigation.Networkidle2]);
+    var pageResponse = await page.GoToAsync(stockScraperBuilder.GetEndpoint());
     Console.WriteLine($"page.WaitForSelectorAsync");
-    //await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
+    await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
 
     Console.WriteLine($"pageResponse={pageResponse.Ok}");
 
