@@ -104,7 +104,10 @@ await browser.CloseAsync();
 await browser.DisposeAsync();
 
 var tickersFilePath = Path.Combine(Directory.GetCurrentDirectory(), "tickersData.json");
-var tickersFileContent = JsonSerializer.Serialize(tickersData);
+var tickersFileContent = JsonSerializer.Serialize(tickersData, new JsonSerializerOptions
+{
+    WriteIndented = true
+});
 
 File.WriteAllText(tickersFilePath, tickersFileContent);
 
