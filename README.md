@@ -6,6 +6,14 @@ Simple project for scraping stocks information, to import values for Google Shee
 
 Needed to list some information from stocks to create custom data in Google Sheets
 
+## How to update `tickersData.json`
+
+```
+cd src
+dotnet run
+mv .\tickersData.json ..\tickersData.json -force
+```
+
 ## How to use?
 
 Install [ImportJSON](https://github.com/bradjasper/ImportJSON) in Google Sheets and start with this sample:
