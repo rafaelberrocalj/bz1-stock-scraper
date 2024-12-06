@@ -1,10 +1,9 @@
-﻿namespace bz1.stockscraper.Models.Builders
+﻿namespace bz1.stockscraper.Models.Builders;
+
+public interface IStockScraperBuilder
 {
-    public interface IStockScraperBuilder
-    {
-        public string GetTicker();
-        public string GetEndpoint();
-        public string GetWaitForSelector();
-        public List<KeyValuePair<string, string>> GetSelectors();
-    }
+    public string GetTicker();
+    public string GetEndpoint();
+    public string GetWaitForSelector();
+    public List<KeyValuePair<string, string>> GetSelectors();
 }
