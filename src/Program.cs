@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using Microsoft.Extensions.Configuration;
 using PuppeteerSharp;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 
@@ -13,6 +14,9 @@ var builder = new ConfigurationBuilder()
 var configuration = builder.Build();
 
 Console.WriteLine($"bz1-stock-scraper");
+
+var culturePtBr = CultureInfo.CreateSpecificCulture("pt-BR");
+var doubleDecimalStylePtBr = NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands;
 
 var tickersConfigurationSectionFIIs = configuration.GetSection("Tickers:FIIs");
 var tickersConfigurationSectionFIInfras = configuration.GetSection("Tickers:FIInfras");
@@ -76,7 +80,7 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
         var htmlDocumentSingleNode = htmlDocument.DocumentNode.SelectSingleNode(selector.Value);
         if (htmlDocumentSingleNode != null)
         {
-            if (double.TryParse(htmlDocumentSingleNode.InnerText, out double val))
+            if (double.TryParse(htmlDocumentSingleNode.InnerText, doubleDecimalStylePtBr, culturePtBr, out double val))
             {
                 scrapedSelectorValue = val;
             }
