@@ -11,7 +11,7 @@ Needed to list some information from stocks to create custom data in Google Shee
 ```
 cd src
 dotnet run
-mv .\tickersData.json ..\tickersData.json -force
+mv ./tickersData.json ../tickersData.json
 ```
 
 ## How to use?
