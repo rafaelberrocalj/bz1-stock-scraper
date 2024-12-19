@@ -8,11 +8,11 @@
     "dividend": 0.75
   },
   "CYCR11": {
-    "pvp": 0.85,
+    "pvp": 0.83,
     "dividend": 0.095
   },
   "ICRI11": {
-    "pvp": 0.79,
+    "pvp": 0.78,
     "dividend": 1.45
   },
   "KNSC11": {
@@ -44,7 +44,7 @@
     "dividend": 1.04
   },
   "RURA11": {
-    "pvp": 0.73,
+    "pvp": 0.72,
     "dividend": 0.06
   }
 }
