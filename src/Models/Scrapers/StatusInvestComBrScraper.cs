@@ -56,7 +56,6 @@ public class StatusInvestComBrScraper : IScraper
         );
 
         builder
-            .AddSelector("pvp", "/html/body/main/div[2]/div[5]/div/div[2]/div/div[1]/strong", "/html/body/main/div[2]/div[4]/div/div[2]/div/div[1]/strong")
             .AddSelector("dividend",
                 "/html/body/main/div[2]/div[8]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]",
                 "/html/body/main/div[2]/div[7]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]",
