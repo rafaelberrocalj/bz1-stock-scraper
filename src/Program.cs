@@ -32,18 +32,18 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
 {
     Headless = false,
     Args = ["--start-maximized"],
-    ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    UserDataDir = "~/Library/Application Support/Google/Chrome/Default",
+    DefaultViewport = new ViewPortOptions
+    {
+        Width = 1280,
+        Height = 1024
+    }
 });
 
 var page = (await browser.PagesAsync()).Single();
 
-await page.SetViewportAsync(new ViewPortOptions
-{
-    Width = 1280,
-    Height = 1024
-});
-
-await page.SetUserAgentAsync("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
+await page.SetUserAgentAsync("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36");
 
 var statusInvestComBrFIIsScrapers = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
 var statusInvestComBrFIInfrasScrapers = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
