@@ -10,6 +10,7 @@ Needed to list some information from stocks to create custom data in Google Shee
 
 ```
 cd src
+dotnet build
 dotnet run
 mv ./tickersData.json ../tickersData.json
 ```
