@@ -13,6 +13,10 @@ cd src
 dotnet build
 dotnet run
 mv ./tickersData.json ../tickersData.json
+cd ..
+git add .
+git commit -m "update tickersData.json"
+git push
 ```
 
 ## How to use?
