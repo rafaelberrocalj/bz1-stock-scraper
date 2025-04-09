@@ -104,6 +104,18 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     tickersData.Add(currentTicker, tickerData);
 }
 
+await page.GoToAsync("https://wise.com/br/currency-converter/dolar-hoje");
+var htmlDolar = await page.GetContentAsync();
+var htmlDocumentDolar = new HtmlDocument();
+htmlDocumentDolar.LoadHtml(htmlDolar);
+var dolarString = htmlDocumentDolar.GetElementbyId("target-input").GetAttributeValue("value", string.Empty);
+double.TryParse(dolarString, doubleDecimalStylePtBr, culturePtBr, out double dolarValue);
+tickersData["DOLAR"] = new Dictionary<string, object>
+{
+    ["valueBR"] = dolarValue,
+    ["date"] = DateTime.UtcNow.Date.ToString("yyy/MM/dd")
+};
+
 await page.CloseAsync();
 await page.DisposeAsync();
 
