@@ -1,18 +1,18 @@
 {
   "BARI11": {
-    "dividend": 0.88
+    "dividend": 0.95
   },
   "BCRI11": {
-    "dividend": 0.77
+    "dividend": 0.76
   },
   "CYCR11": {
-    "dividend": 0.1
+    "dividend": 0.106
   },
   "ICRI11": {
-    "dividend": 1
+    "dividend": 1.15
   },
   "KNSC11": {
-    "dividend": 0.09
+    "dividend": 0.1
   },
   "MFII11": {
     "dividend": 1.11
@@ -21,7 +21,7 @@
     "dividend": 1
   },
   "URPR11": {
-    "dividend": 0.82
+    "dividend": 0.8
   },
   "VGHF11": {
     "dividend": 0.09
@@ -30,9 +30,9 @@
     "dividend": 0.03
   },
   "IFRI11": {
-    "dividend": 1.05
+    "dividend": 1
   },
   "RURA11": {
-    "dividend": 0.085
+    "dividend": "-"
   }
 }
