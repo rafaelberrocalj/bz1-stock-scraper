@@ -33,7 +33,7 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
     Headless = false,
     Args = ["--start-maximized"],
     ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    UserDataDir = "~/Library/Application Support/Google/Chrome/Default",
+    UserDataDir = "/Users/rafaelberrocalj/Library/Application Support/Google/Chrome/Default",
     DefaultViewport = new ViewPortOptions
     {
         Width = 1280,
