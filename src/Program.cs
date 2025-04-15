@@ -31,7 +31,10 @@ await new BrowserFetcher().DownloadAsync();
 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
 {
     Headless = false,
-    Args = ["--start-maximized"],
+    Args = [
+        "--start-maximized",
+        "--user-data-dir=~/Library/Application Support/Google/Chrome/Default"
+    ],
     ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     UserDataDir = "~/Library/Application Support/Google/Chrome/Default",
     DefaultViewport = new ViewPortOptions
