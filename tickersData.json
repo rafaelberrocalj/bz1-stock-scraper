@@ -36,10 +36,10 @@
     "dividend": 0.085
   },
   "JEPI": {
-    "dividend": "-"
+    "dividend": 0.3276
   },
   "SPHD": {
-    "dividend": "-"
+    "dividend": 0.13909
   },
   "TFLO": {
     "dividend": 0.164781
