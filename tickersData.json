@@ -39,10 +39,10 @@
     "dividend": 0.3276
   },
   "SPHD": {
-    "dividend": 0.13909
+    "dividend": "-"
   },
   "TFLO": {
-    "dividend": "-"
+    "dividend": 0.164781
   },
   "DOLAR": {
     "valueBR": 5.81,
