@@ -35,8 +35,17 @@
   "RURA11": {
     "dividend": 0.085
   },
+  "JEPI": {
+    "dividend": "-"
+  },
+  "SPHD": {
+    "dividend": "-"
+  },
+  "TFLO": {
+    "dividend": "-"
+  },
   "DOLAR": {
     "valueBR": 5.81,
-    "date": "2025/04/18"
+    "date": "2025/04/20"
   }
 }
