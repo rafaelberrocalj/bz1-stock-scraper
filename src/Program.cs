@@ -21,10 +21,23 @@ var doubleDecimalStylePtBr = NumberStyles.AllowDecimalPoint | NumberStyles.Allow
 var tickersConfigurationSectionFIIs = configuration.GetSection("Tickers:FIIs");
 var tickersConfigurationSectionFIInfras = configuration.GetSection("Tickers:FIInfras");
 var tickersConfigurationSectionFIAgros = configuration.GetSection("Tickers:FIAgros");
+var tickersConfigurationSectionETFEUA = configuration.GetSection("Tickers:ETFEUA");
 
 var tickersConfigurationListFIIs = tickersConfigurationSectionFIIs.Get<List<string>>()!;
 var tickersConfigurationListFIInfras = tickersConfigurationSectionFIInfras.Get<List<string>>()!;
 var tickersConfigurationListFIAgros = tickersConfigurationSectionFIAgros.Get<List<string>>()!;
+var tickersConfigurationListETFEUA = tickersConfigurationSectionETFEUA.Get<List<string>>()!;
+
+var statusInvestComBrFIIsScrapers = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
+var statusInvestComBrFIInfrasScrapers = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
+var statusInvestComBrFIAgrosScrapers = tickersConfigurationListFIAgros.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIAgros().Build());
+var statusInvestComBrETFEUAScrapers = tickersConfigurationListETFEUA.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithETFEUA().Build());
+
+var stockScraperBuilders =
+    statusInvestComBrFIIsScrapers
+    .Union(statusInvestComBrFIInfrasScrapers)
+    .Union(statusInvestComBrFIAgrosScrapers)
+    .Union(statusInvestComBrETFEUAScrapers);
 
 await new BrowserFetcher().DownloadAsync();
 
@@ -45,15 +58,6 @@ var page = (await browser.PagesAsync()).Single();
 
 await page.SetUserAgentAsync("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36");
 
-var statusInvestComBrFIIsScrapers = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
-var statusInvestComBrFIInfrasScrapers = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
-var statusInvestComBrFIAgrosScrapers = tickersConfigurationListFIAgros.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIAgros().Build());
-
-var stockScraperBuilders =
-    statusInvestComBrFIIsScrapers
-    .Union(statusInvestComBrFIInfrasScrapers)
-    .Union(statusInvestComBrFIAgrosScrapers);
-
 var tickersData = new Dictionary<string, Dictionary<string, object>>();
 
 var emptyScrapedValue = "-";
@@ -65,7 +69,8 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine();
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
-    await page.GoToAsync(stockScraperBuilder.GetEndpoint());
+    await page.GoToAsync(stockScraperBuilder.GetEndpoint().ToLower());
+
     await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
 
     var html = await page.GetContentAsync();
