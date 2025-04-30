@@ -3,25 +3,25 @@
     "dividend": 0.95
   },
   "BCRI11": {
-    "dividend": 0.76
+    "dividend": 0.81
   },
   "CYCR11": {
     "dividend": 0.106
   },
   "ICRI11": {
-    "dividend": 1.15
+    "dividend": 1.1
   },
   "KNSC11": {
-    "dividend": 0.1
+    "dividend": 0.11
   },
   "MFII11": {
-    "dividend": 1.11
+    "dividend": 1.1
   },
   "TGAR11": {
     "dividend": 1
   },
   "URPR11": {
-    "dividend": 0.8
+    "dividend": 0.69
   },
   "VGHF11": {
     "dividend": 0.09
@@ -45,7 +45,7 @@
     "dividend": 0.164781
   },
   "DOLAR": {
-    "valueBR": 5.62,
-    "date": "2025/04/29"
+    "valueBR": 5.67,
+    "date": "2025/04/30"
   }
 }
