@@ -62,6 +62,8 @@ var tickersData = new Dictionary<string, Dictionary<string, object>>();
 
 var emptyScrapedValue = "-";
 
+var random = new Random();
+
 foreach (var stockScraperBuilder in stockScraperBuilders)
 {
     var currentTicker = stockScraperBuilder.GetTicker();
@@ -72,6 +74,8 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     await page.GoToAsync(stockScraperBuilder.GetEndpoint().ToLower());
 
     await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
+
+    await Task.Delay(random.Next(1000, 2000));
 
     var html = await page.GetContentAsync();
     var htmlDocument = new HtmlDocument();
@@ -109,6 +113,8 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     tickersData.Add(currentTicker, tickerData);
 }
 
+Console.WriteLine();
+
 await page.GoToAsync("https://wise.com/br/currency-converter/dolar-hoje");
 var htmlDolar = await page.GetContentAsync();
 var htmlDocumentDolar = new HtmlDocument();
@@ -120,6 +126,7 @@ tickersData["DOLAR"] = new Dictionary<string, object>
     ["valueBR"] = dolarValue,
     ["date"] = DateTime.UtcNow.Date.ToString("yyy/MM/dd")
 };
+Console.WriteLine($"DOLAR:valueBR:{dolarValue}");
 
 await page.CloseAsync();
 await page.DisposeAsync();
