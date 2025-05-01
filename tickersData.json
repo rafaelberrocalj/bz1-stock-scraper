@@ -1,12 +1,12 @@
 {
   "BARI11": {
-    "dividend": 0.95
+    "dividend": 1
   },
   "BCRI11": {
     "dividend": 0.81
   },
   "CYCR11": {
-    "dividend": 0.106
+    "dividend": 0.11
   },
   "ICRI11": {
     "dividend": 1.1
@@ -33,19 +33,19 @@
     "dividend": 1
   },
   "RURA11": {
-    "dividend": 0.085
+    "dividend": 0.1
   },
   "JEPI": {
     "dividend": 0.3276
   },
   "SPHD": {
-    "dividend": 0.13909
+    "dividend": 0.14015
   },
   "TFLO": {
     "dividend": 0.164781
   },
   "DOLAR": {
     "valueBR": 5.67,
-    "date": "2025/04/30"
+    "date": "2025/05/01"
   }
 }
