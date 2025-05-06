@@ -28,16 +28,16 @@ var tickersConfigurationListFIInfras = tickersConfigurationSectionFIInfras.Get<L
 var tickersConfigurationListFIAgros = tickersConfigurationSectionFIAgros.Get<List<string>>()!;
 var tickersConfigurationListETFEUA = tickersConfigurationSectionETFEUA.Get<List<string>>()!;
 
-var statusInvestComBrFIIsScrapers = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
-var statusInvestComBrFIInfrasScrapers = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
-var statusInvestComBrFIAgrosScrapers = tickersConfigurationListFIAgros.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIAgros().Build());
-var statusInvestComBrETFEUAScrapers = tickersConfigurationListETFEUA.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithETFEUA().Build());
+var scraperFIIs = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
+var scraperFIInfras = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
+var scraperFIAgros = tickersConfigurationListFIAgros.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIAgros().Build());
+var scraperETFEUA = tickersConfigurationListETFEUA.Select(ticker => new StockAnalysisScraper().WithTicker(ticker).WithETF().Build());
 
 var stockScraperBuilders =
-    statusInvestComBrFIIsScrapers
-    .Union(statusInvestComBrFIInfrasScrapers)
-    .Union(statusInvestComBrFIAgrosScrapers)
-    .Union(statusInvestComBrETFEUAScrapers);
+    scraperFIIs
+    .Union(scraperFIInfras)
+    .Union(scraperFIAgros)
+    .Union(scraperETFEUA);
 
 await new BrowserFetcher().DownloadAsync();
 
@@ -92,13 +92,19 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
         var htmlDocumentSingleNode = htmlDocument.DocumentNode.SelectSingleNode(selector.Value);
         if (htmlDocumentSingleNode != null)
         {
-            if (double.TryParse(htmlDocumentSingleNode.InnerText, doubleDecimalStylePtBr, culturePtBr, out double val))
+            var actualValue = htmlDocumentSingleNode.InnerText
+                .Trim()
+                .Replace("R$", "")
+                .Replace("$", "")
+                .Replace(".", ",");
+
+            if (double.TryParse(actualValue, doubleDecimalStylePtBr, culturePtBr, out double val))
             {
                 scrapedSelectorValue = val;
             }
             else
             {
-                scrapedSelectorValue = htmlDocumentSingleNode.InnerText;
+                scrapedSelectorValue = actualValue;
             }
         }
 

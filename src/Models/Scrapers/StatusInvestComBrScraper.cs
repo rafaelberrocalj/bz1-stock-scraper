@@ -45,13 +45,6 @@ public class StatusInvestComBrScraper : IScraper
         return this;
     }
 
-    public StatusInvestComBrScraper WithETFEUA()
-    {
-        EndpointPath = $"etf/eua/{GetTicker()}";
-
-        return this;
-    }
-
     public IStockScraperBuilder Build()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(EndpointPath);
@@ -65,8 +58,7 @@ public class StatusInvestComBrScraper : IScraper
         builder
             .AddSelector("dividend",
                 "/html/body/main/div[2]/div[8]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]",
-                "/html/body/main/div[2]/div[7]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]",
-                "/html/body/main/div[3]/div[1]/div[2]/div[7]/div/div[2]/table/tbody/tr[1]/td[4]"
+                "/html/body/main/div[2]/div[7]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]"
             );
 
         return builder;
