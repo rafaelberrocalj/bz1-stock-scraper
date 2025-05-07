@@ -17,4 +17,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag bz1-stock-scraper:latest
     - name: Run the Docker image
-      run: docker run -it --name=stock-scaper bz1-stock-scraper
+      run: docker run bz1-stock-scraper
