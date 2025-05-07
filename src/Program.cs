@@ -75,6 +75,11 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
 
     await page.GoToAsync(stockScraperBuilder.GetEndpoint().ToLower());
 
+    await Task.Delay(random.Next(5000, 8000));
+
+    var html2 = await page.GetContentAsync();
+    Console.WriteLine($"html2:{html2}");
+
     await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
 
     await Task.Delay(random.Next(1000, 2000));
