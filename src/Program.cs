@@ -39,14 +39,18 @@ var stockScraperBuilders =
     .Union(scraperFIAgros)
     .Union(scraperETFEUA);
 
-await new BrowserFetcher().DownloadAsync();
+//await new BrowserFetcher().DownloadAsync();
+var executablePath = configuration["PUPPETEER_EXECUTABLE_PATH"];
+Console.WriteLine();
+Console.WriteLine($"ENV:PUPPETEER_EXECUTABLE_PATH:{executablePath}");
 
 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
 {
-    Headless = false,
-    Args = ["--start-maximized"],
-    ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    UserDataDir = "~/Library/Application Support/Google/Chrome/Default",
+    Headless = true,
+    Args = ["--no-sandbox", "--disable-setuid-sandbox"],
+    ExecutablePath = executablePath,
+    //ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    //UserDataDir = "~/Library/Application Support/Google/Chrome/Default",
     DefaultViewport = new ViewPortOptions
     {
         Width = 1280,
@@ -59,8 +63,6 @@ var page = (await browser.PagesAsync()).Single();
 await page.SetUserAgentAsync("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36");
 
 var tickersData = new Dictionary<string, Dictionary<string, object>>();
-
-var emptyScrapedValue = "-";
 
 var random = new Random();
 
@@ -87,7 +89,7 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
 
     foreach (var selector in selectors)
     {
-        object scrapedSelectorValue = emptyScrapedValue;
+        object scrapedSelectorValue = string.Empty;
 
         var htmlDocumentSingleNode = htmlDocument.DocumentNode.SelectSingleNode(selector.Value);
         if (htmlDocumentSingleNode != null)
@@ -108,7 +110,7 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
             }
         }
 
-        if (!tickerData.ContainsKey(selector.Key) || scrapedSelectorValue.ToString() != emptyScrapedValue)
+        if (!tickerData.ContainsKey(selector.Key) || scrapedSelectorValue.ToString() != string.Empty)
         {
             tickerData[selector.Key] = scrapedSelectorValue;
         }
