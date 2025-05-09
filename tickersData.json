@@ -27,7 +27,7 @@
     "dividend": 0.09
   },
   "VSLH11": {
-    "dividend": 0.03
+    "dividend": 0.038
   },
   "IFRI11": {
     "dividend": 1
@@ -45,7 +45,7 @@
     "dividend": 0.17587
   },
   "DOLAR": {
-    "valueBR": 5.75,
-    "date": "2025/05/07"
+    "valueBR": 5.66,
+    "date": "2025/05/09"
   }
 }
