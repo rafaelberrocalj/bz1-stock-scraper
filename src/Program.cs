@@ -91,7 +91,19 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
         if (rawHtml.Contains("cloudflare.com"))
         {
 
-            await page.EvaluateExpressionAsync("document.querySelector('input[name=cf-turnstile-response]').click();");
+            await page.Mouse.MoveAsync(100, 100);
+            await page.Mouse.DownAsync();
+            await page.Mouse.MoveAsync(200, 200);
+            await page.Mouse.UpAsync();
+
+            await page.EvaluateExpressionAsync("document.querySelector('input[name=\"cf-turnstile-response\"]').click();");
+
+            await page.Mouse.MoveAsync(100, 100);
+            await page.Mouse.DownAsync();
+            await page.Mouse.MoveAsync(200, 200);
+            await page.Mouse.UpAsync();
+
+            await page.EvaluateExpressionAsync("document.querySelector('input[name=\"cf_challenge_response\"]').click();");
             //await page.ClickAsync("input[name=cf-turnstile-response]");
 
             await page.Mouse.MoveAsync(100, 100);
