@@ -87,11 +87,13 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     {
         Console.Error.WriteLine($"Error navigating to {stockScraperBuilder.GetEndpoint()}: {exception.Message}");
 
+
         var rawHtml = await page.GetContentAsync();
         Console.WriteLine($"rawHtml:{rawHtml}");
 
         if (rawHtml.Contains("cloudflare.com"))
         {
+
             var inputs = await page.QuerySelectorAllAsync("input");
             foreach (var input in inputs)
             {
@@ -101,6 +103,12 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
                 Console.WriteLine($"input:{name}");
 
             }
+
+            await page.ClickAsync("input[name=cf-turnstile-response]");
+            await Task.Delay(random.Next(5000, 9000));
+            Console.WriteLine($"html:{await page.GetContentAsync()}");
+
+
         }
 
         break;
