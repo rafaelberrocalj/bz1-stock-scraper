@@ -39,16 +39,16 @@ var stockScraperBuilders =
     .Union(scraperFIAgros)
     .Union(scraperETFEUA);
 
-//await new BrowserFetcher().DownloadAsync();
-var executablePath = configuration["PUPPETEER_EXECUTABLE_PATH"];
-Console.WriteLine();
-Console.WriteLine($"ENV:PUPPETEER_EXECUTABLE_PATH:{executablePath}");
+await new BrowserFetcher().DownloadAsync();
+//var executablePath = configuration["PUPPETEER_EXECUTABLE_PATH"];
+//Console.WriteLine();
+//Console.WriteLine($"ENV:PUPPETEER_EXECUTABLE_PATH:{executablePath}");
 
 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
 {
     Headless = true,
     Args = ["--no-sandbox", "--disable-setuid-sandbox"],
-    ExecutablePath = executablePath,
+    //ExecutablePath = executablePath,
     //ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     //UserDataDir = "~/Library/Application Support/Google/Chrome/Default",
     DefaultViewport = new ViewPortOptions
@@ -74,14 +74,11 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
     await page.GoToAsync(stockScraperBuilder.GetEndpoint().ToLower());
-
-    await Task.Delay(random.Next(5000, 8000));
-
-    var html2 = await page.GetContentAsync();
-    Console.WriteLine($"html2:{html2}");
+    //await Task.Delay(random.Next(5000, 8000));
+    //var html2 = await page.GetContentAsync();
+    //Console.WriteLine($"html2:{html2}");
 
     await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
-
     await Task.Delay(random.Next(1000, 2000));
 
     var html = await page.GetContentAsync();
