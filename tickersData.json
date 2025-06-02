@@ -6,13 +6,13 @@
     "dividend": 0.88
   },
   "CYCR11": {
-    "dividend": 0.11
+    "dividend": 0.115
   },
   "ICRI11": {
     "dividend": 1.05
   },
   "KNSC11": {
-    "dividend": 0.11
+    "dividend": 0.1
   },
   "MFII11": {
     "dividend": 1.1
@@ -30,22 +30,22 @@
     "dividend": 0.038
   },
   "IFRI11": {
-    "dividend": 1
+    "dividend": 0.83
   },
   "RURA11": {
     "dividend": 0.1
   },
   "JEPI": {
-    "dividend": 0.48792
+    "dividend": 0.54001
   },
   "SPHD": {
     "dividend": 0.14559
   },
   "TFLO": {
-    "dividend": 0.17587
+    "dividend": 0.18918
   },
   "DOLAR": {
-    "valueBR": 5.72,
-    "date": "2025/05/30"
+    "valueBR": 5.67,
+    "date": "2025/06/02"
   }
 }
