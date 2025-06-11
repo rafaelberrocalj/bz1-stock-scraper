@@ -133,8 +133,8 @@ var dolarString = htmlDocumentDolar.GetElementbyId("target-input").GetAttributeV
 double.TryParse(dolarString, doubleDecimalStylePtBr, culturePtBr, out double dolarValue);
 tickersData["DOLAR"] = new Dictionary<string, object>
 {
-    ["valueBR"] = dolarValue,
-    ["date"] = DateTime.UtcNow.Date.ToString("yyy/MM/dd")
+    ["value"] = dolarValue,
+    ["date"] = DateTime.Today.ToString("yyy/MM/dd")
 };
 Console.WriteLine($"DOLAR:valueBR:{dolarValue}");
 
