@@ -1,18 +1,18 @@
 {
   "BARI11": {
-    "dividend": 1.05
+    "dividend": 0.95
   },
   "BCRI11": {
     "dividend": 0.91
   },
   "CYCR11": {
-    "dividend": 0.116
+    "dividend": 0.106
   },
   "ICRI11": {
     "dividend": 1.1
   },
   "KNSC11": {
-    "dividend": 0.09
+    "dividend": 0.1
   },
   "MFII11": {
     "dividend": 1.06
@@ -45,7 +45,7 @@
     "dividend": 0.18223
   },
   "DOLAR": {
-    "value": 5.6,
-    "date": "2025/07/31"
+    "value": 5.54,
+    "date": "2025/08/01"
   }
 }
