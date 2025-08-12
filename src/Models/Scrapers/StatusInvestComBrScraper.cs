@@ -59,6 +59,9 @@ public class StatusInvestComBrScraper : IScraper
             .AddSelector("dividend",
                 "/html/body/main/div[2]/div[8]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]",
                 "/html/body/main/div[2]/div[7]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]"
+            )
+            .AddSelector("value",
+                "/html/body/main/div[2]/div[1]/div[1]/div/div[1]/strong"
             );
 
         return builder;
