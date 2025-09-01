@@ -23,10 +23,10 @@ var tickersConfigurationSectionFIInfras = configuration.GetSection("Tickers:FIIn
 var tickersConfigurationSectionFIAgros = configuration.GetSection("Tickers:FIAgros");
 var tickersConfigurationSectionETFEUA = configuration.GetSection("Tickers:ETFEUA");
 
-var tickersConfigurationListFIIs = tickersConfigurationSectionFIIs.Get<List<string>>()!;
-var tickersConfigurationListFIInfras = tickersConfigurationSectionFIInfras.Get<List<string>>()!;
-var tickersConfigurationListFIAgros = tickersConfigurationSectionFIAgros.Get<List<string>>()!;
-var tickersConfigurationListETFEUA = tickersConfigurationSectionETFEUA.Get<List<string>>()!;
+var tickersConfigurationListFIIs = tickersConfigurationSectionFIIs.Get<List<string>>() ?? [];
+var tickersConfigurationListFIInfras = tickersConfigurationSectionFIInfras.Get<List<string>>() ?? [];
+var tickersConfigurationListFIAgros = tickersConfigurationSectionFIAgros.Get<List<string>>() ?? [];
+var tickersConfigurationListETFEUA = tickersConfigurationSectionETFEUA.Get<List<string>>() ?? [];
 
 var scraperFIIs = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
 var scraperFIInfras = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
@@ -73,10 +73,13 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine();
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
-    await page.GoToAsync(stockScraperBuilder.GetEndpoint().ToLower());
-    //await Task.Delay(random.Next(5000, 8000));
-    //var html2 = await page.GetContentAsync();
-    //Console.WriteLine($"html2:{html2}");
+    await page.GoToAsync(stockScraperBuilder.GetEndpoint().ToLower(), new NavigationOptions
+    {
+        WaitUntil = [WaitUntilNavigation.DOMContentLoaded]
+    });
+    // await Task.Delay(random.Next(5000, 8000));
+    // var html2 = await page.GetContentAsync();
+    // Console.WriteLine($"html2:{html2}");
 
     await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
     await Task.Delay(random.Next(1000, 2000));
