@@ -5,43 +5,43 @@
   },
   "BCRI11": {
     "dividend": 0.83,
-    "value": 62.68
+    "value": 63.29
   },
   "CYCR11": {
     "dividend": 0.106,
-    "value": 8.57
+    "value": 8.64
   },
   "ICRI11": {
     "dividend": 0.95,
-    "value": 90.2
+    "value": 90.08
   },
   "KNSC11": {
     "dividend": 0.09,
-    "value": 8.66
+    "value": 8.61
   },
   "MFII11": {
     "dividend": 1.06,
-    "value": 80
+    "value": 79.55
   },
   "TGAR11": {
     "dividend": 1,
-    "value": 82.15
+    "value": 81.61
   },
   "URPR11": {
     "dividend": 0.4,
-    "value": 36.92
+    "value": 37.4
   },
   "VGHF11": {
     "dividend": 0.09,
-    "value": 7.6
+    "value": 7.63
   },
   "VSLH11": {
     "dividend": 0.026,
-    "value": 2.65
+    "value": 2.6
   },
   "IFRI11": {
     "dividend": 1.75,
-    "value": 97.4
+    "value": 97.47
   },
   "RURA11": {
     "dividend": 0.105,
@@ -58,6 +58,6 @@
   },
   "DOLAR": {
     "value": 5.45,
-    "date": "2025/09/03"
+    "date": "2025/09/04"
   }
 }
