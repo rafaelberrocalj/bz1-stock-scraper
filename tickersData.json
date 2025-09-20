@@ -9,7 +9,7 @@
   },
   "CVBI11": {
     "dividend": 1.05,
-    "value": 83.83
+    "value": 83.98
   },
   "CYCR11": {
     "dividend": 0.106,
@@ -17,7 +17,7 @@
   },
   "ICRI11": {
     "dividend": 0.95,
-    "value": 91.05
+    "value": 91.35
   },
   "KNSC11": {
     "dividend": 0.09,
@@ -25,11 +25,11 @@
   },
   "MFII11": {
     "dividend": 1.06,
-    "value": 80
+    "value": 79.02
   },
   "TGAR11": {
     "dividend": 1,
-    "value": 87.66
+    "value": 87.37
   },
   "URPR11": {
     "dividend": 0.4,
@@ -37,15 +37,15 @@
   },
   "VGHF11": {
     "dividend": 0.09,
-    "value": 7.74
+    "value": 7.75
   },
   "VSLH11": {
     "dividend": 0.029,
-    "value": 2.64
+    "value": 2.63
   },
   "IFRI11": {
     "dividend": 1.2,
-    "value": 100
+    "value": 100.2
   },
   "RURA11": {
     "dividend": 0.105,
