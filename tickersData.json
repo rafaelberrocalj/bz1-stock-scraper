@@ -1,6 +1,6 @@
 {
   "BCRI11": {
-    "dividend": 0.83
+    "dividend": 0.88
   },
   "CYCR11": {
     "dividend": 0.106
@@ -12,7 +12,7 @@
     "dividend": 0.09
   },
   "MFII11": {
-    "dividend": 1.06
+    "dividend": 1.07
   },
   "PCIP11": {
     "dividend": 1.05
@@ -33,7 +33,7 @@
     "dividend": 1.2
   },
   "RURA11": {
-    "dividend": 0.105
+    "dividend": 0.11
   },
   "JEPI": {
     "dividend": 0.36826
