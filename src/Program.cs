@@ -73,7 +73,7 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     Console.WriteLine();
     Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
 
-    await page.GoToAsync(stockScraperBuilder.GetEndpoint().ToLower(), new NavigationOptions
+    await page.GoToAsync(stockScraperBuilder.GetEndpoint(), new NavigationOptions
     {
         WaitUntil = [WaitUntilNavigation.DOMContentLoaded]
     });
@@ -128,7 +128,10 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
 
 Console.WriteLine();
 
-await page.GoToAsync("https://wise.com/br/currency-converter/dolar-hoje");
+await page.GoToAsync("https://wise.com/br/currency-converter/dolar-hoje", new NavigationOptions
+{
+    WaitUntil = [WaitUntilNavigation.DOMContentLoaded]
+});
 var htmlDolar = await page.GetContentAsync();
 var htmlDocumentDolar = new HtmlDocument();
 htmlDocumentDolar.LoadHtml(htmlDolar);
