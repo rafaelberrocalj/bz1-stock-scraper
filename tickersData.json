@@ -1,55 +1,39 @@
 {
-  "BARI11": {
-    "dividend": 4.38101641,
-    "value": 79.2
-  },
   "BCRI11": {
-    "dividend": 0.83,
-    "value": 63.52
-  },
-  "CVBI11": {
-    "dividend": 1.05,
-    "value": 82.9
+    "dividend": 0.83
   },
   "CYCR11": {
-    "dividend": 0.106,
-    "value": 8.68
+    "dividend": 0.106
   },
   "ICRI11": {
-    "dividend": 0.95,
-    "value": 91.57
+    "dividend": 0.95
   },
   "KNSC11": {
-    "dividend": 0.09,
-    "value": 8.78
+    "dividend": 0.09
   },
   "MFII11": {
-    "dividend": 1.06,
-    "value": 79.67
+    "dividend": 1.06
+  },
+  "PCIP11": {
+    "dividend": 1.05
   },
   "TGAR11": {
-    "dividend": 1,
-    "value": 86.87
+    "dividend": 1
   },
   "URPR11": {
-    "dividend": 0.4,
-    "value": 37.71
+    "dividend": 0.4
   },
   "VGHF11": {
-    "dividend": 0.09,
-    "value": 7.76
+    "dividend": 0.09
   },
   "VSLH11": {
-    "dividend": 0.029,
-    "value": 2.62
+    "dividend": 0.029
   },
   "IFRI11": {
-    "dividend": 1.2,
-    "value": 101.51
+    "dividend": 1.2
   },
   "RURA11": {
-    "dividend": 0.105,
-    "value": 8.25
+    "dividend": 0.105
   },
   "JEPI": {
     "dividend": 0.36826
@@ -61,7 +45,7 @@
     "dividend": 0.18456
   },
   "DOLAR": {
-    "value": 5.34,
-    "date": "2025/09/26"
+    "value": 5.32,
+    "date": "2025/09/29"
   }
 }
