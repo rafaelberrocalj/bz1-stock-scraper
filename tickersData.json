@@ -6,10 +6,10 @@
     "dividend": 0.106
   },
   "ICRI11": {
-    "dividend": 0.95
+    "dividend": 0.85
   },
   "KNSC11": {
-    "dividend": 0.09
+    "dividend": 0.1
   },
   "MFII11": {
     "dividend": 1.07
@@ -24,7 +24,7 @@
     "dividend": 0.4
   },
   "VGHF11": {
-    "dividend": 0.09
+    "dividend": 0.08
   },
   "VSLH11": {
     "dividend": 0.029
@@ -45,7 +45,7 @@
     "dividend": 0.18456
   },
   "DOLAR": {
-    "value": 5.32,
-    "date": "2025/09/30"
+    "value": 5.33,
+    "date": "2025/10/01"
   }
 }
