@@ -15,7 +15,7 @@
     "dividend": 1.07
   },
   "PCIP11": {
-    "dividend": 1.05
+    "dividend": 0.85
   },
   "TGAR11": {
     "dividend": 1
@@ -45,7 +45,7 @@
     "dividend": 0.16787
   },
   "DOLAR": {
-    "value": 5.34,
-    "date": "2025/10/08"
+    "value": 5.38,
+    "date": "2025/10/09"
   }
 }
