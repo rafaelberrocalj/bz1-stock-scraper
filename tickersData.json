@@ -30,7 +30,7 @@
     "dividend": 0.029
   },
   "IFRI11": {
-    "dividend": 1.2
+    "dividend": 1.4
   },
   "RURA11": {
     "dividend": 0.11
@@ -45,7 +45,7 @@
     "dividend": 0.16787
   },
   "DOLAR": {
-    "value": 5.52,
-    "date": "2025/10/11"
+    "value": 5.47,
+    "date": "2025/10/13"
   }
 }
