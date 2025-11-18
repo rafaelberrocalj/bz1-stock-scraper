@@ -6,7 +6,7 @@
     "dividend": 0.106
   },
   "ICRI11": {
-    "dividend": 0.85
+    "dividend": 1
   },
   "KNSC11": {
     "dividend": 0.09
@@ -15,7 +15,7 @@
     "dividend": 1.07
   },
   "PCIP11": {
-    "dividend": 0.85
+    "dividend": 0.9
   },
   "TGAR11": {
     "dividend": 1
@@ -36,16 +36,16 @@
     "dividend": 0.11
   },
   "JEPI": {
-    "dividend": 0.36102
+    "dividend": 0.34636
   },
   "SPHD": {
     "dividend": 0.18271
   },
   "TFLO": {
-    "dividend": 0.16787
+    "dividend": 0.16788
   },
   "DOLAR": {
-    "value": 5.38,
-    "date": "2025/10/31"
+    "value": 5.33,
+    "date": "2025/11/17"
   }
 }
