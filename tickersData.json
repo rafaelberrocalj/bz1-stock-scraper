@@ -15,7 +15,7 @@
     "dividend": 1.07
   },
   "PCIP11": {
-    "dividend": 0.83
+    "dividend": 0.88
   },
   "TGAR11": {
     "dividend": 1
@@ -27,7 +27,7 @@
     "dividend": 0.07
   },
   "VSLH11": {
-    "dividend": 0.029
+    "dividend": 0.03
   },
   "IFRI11": {
     "dividend": 1.4
@@ -36,16 +36,16 @@
     "dividend": 0.11
   },
   "JEPI": {
-    "dividend": 0.42709
+    "dividend": ""
   },
   "SPHD": {
-    "dividend": 0.20594
+    "dividend": ""
   },
   "TFLO": {
-    "dividend": 0.16314
+    "dividend": ""
   },
   "DOLAR": {
-    "value": 5.41,
-    "date": "2026/01/05"
+    "value": 5.37,
+    "date": "2026/01/19"
   }
 }
