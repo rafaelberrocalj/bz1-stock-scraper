@@ -1,6 +1,6 @@
 {
   "BCRI11": {
-    "dividend": 0.91
+    "dividend": 0.75
   },
   "CYCR11": {
     "dividend": 0.106
@@ -12,13 +12,13 @@
     "dividend": 0.09
   },
   "MFII11": {
-    "dividend": 1.07
+    "dividend": 1.05
   },
   "PCIP11": {
     "dividend": 0.88
   },
   "TGAR11": {
-    "dividend": 1
+    "dividend": 0.71
   },
   "URPR11": {
     "dividend": 0.35
@@ -33,7 +33,7 @@
     "dividend": 1.4
   },
   "RURA11": {
-    "dividend": 0.11
+    "dividend": 0.12
   },
   "JEPI": {
     "dividend": ""
@@ -45,7 +45,7 @@
     "dividend": ""
   },
   "DOLAR": {
-    "value": 5.37,
-    "date": "2026/01/19"
+    "value": 5.24,
+    "date": "2026/02/03"
   }
 }
