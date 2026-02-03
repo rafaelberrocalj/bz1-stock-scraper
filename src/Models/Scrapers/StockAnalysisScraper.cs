@@ -43,7 +43,7 @@ public class StockAnalysisScraper : IScraper
 
         builder
             .AddSelector("dividend",
-                "/html/body/div/div[1]/div[2]/main/div[2]/div/div[3]/div[1]/div[2]/table/tbody/tr[1]/td[2]"
+                "/html/body/div/div[1]/div[2]/main/div[2]/div/div[4]/div[1]/div[2]/table/tbody/tr[1]/td[2]"
             );
 
         return builder;
