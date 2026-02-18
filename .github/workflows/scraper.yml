@@ -30,3 +30,11 @@ jobs:
         run: |
           cd src
           dotnet run --project bz1-stock-scraper.csproj
+
+      - name: Upload debug HTML artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug-html
+          path: |
+            src/debug_*.html
