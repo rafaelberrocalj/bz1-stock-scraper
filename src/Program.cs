@@ -7,6 +7,7 @@ using PuppeteerExtraSharp.Plugins.ExtraStealth;
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
+using System.IO;
 
 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -101,11 +102,24 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     {
         WaitUntil = [WaitUntilNavigation.DOMContentLoaded]
     });
-    // await Task.Delay(random.Next(5000, 8000));
-    // var html2 = await page.GetContentAsync();
-    // Console.WriteLine($"html2:{html2}");
 
-    await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
+    // debug: save HTML in case the selector isn't found, making it easier to inspect
+    try
+    {
+        await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector(), new WaitForSelectorOptions
+        {
+            Timeout = 30000
+        });
+    }
+    catch (PuppeteerSharp.WaitTaskTimeoutException ex)
+    {
+        var debugHtml = await page.GetContentAsync();
+        var debugFile = $"debug_{currentTicker}.html";
+        File.WriteAllText(debugFile, debugHtml);
+        Console.WriteLine($"[ERROR] timeout waiting for selector '{stockScraperBuilder.GetWaitForSelector()}' for {currentTicker}. HTML saved to {debugFile}");
+        throw; // rethrow so the job still fails
+    }
+
     await HumanDelayAsync();
 
     var html = await page.GetContentAsync();
