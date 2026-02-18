@@ -1,0 +1,32 @@
+name: Run stock scraper
+
+on:
+  workflow_dispatch: # allows manual trigger from Actions tab
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore src/bz1-stock-scraper.csproj
+
+      - name: Build project
+        run: dotnet build --no-restore src/bz1-stock-scraper.csproj
+
+      - name: Run scraper
+        env:
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+          PUPPETEER_EXECUTABLE_PATH: ${{ secrets.PUPPETEER_EXECUTABLE_PATH }}
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
+        run: |
+          cd src
+          dotnet run --project bz1-stock-scraper.csproj

@@ -2,6 +2,8 @@
 using HtmlAgilityPack;
 using Microsoft.Extensions.Configuration;
 using PuppeteerSharp;
+using PuppeteerExtraSharp;
+using PuppeteerExtraSharp.Plugins.ExtraStealth;
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
@@ -40,14 +42,18 @@ var stockScraperBuilders =
     .Union(scraperETFEUA);
 
 await new BrowserFetcher().DownloadAsync();
+// set up puppeteer-extra (PuppeteerExtraSharp) with stealth plugin for better evasion
+var puppeteerExtra = new PuppeteerExtra();
+puppeteerExtra.Use(new StealthPlugin());
+
 //var executablePath = configuration["PUPPETEER_EXECUTABLE_PATH"];
 //Console.WriteLine();
 //Console.WriteLine($"ENV:PUPPETEER_EXECUTABLE_PATH:{executablePath}");
 
-await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+var launchOpts = new LaunchOptions
 {
     Headless = true,
-    Args = ["--no-sandbox", "--disable-setuid-sandbox"],
+    Args = new[] { "--no-sandbox", "--disable-setuid-sandbox" },
     //ExecutablePath = executablePath,
     //ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     //UserDataDir = "~/Library/Application Support/Google/Chrome/Default",
@@ -56,15 +62,33 @@ await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
         Width = 1280,
         Height = 1024
     }
-});
+};
+
+await using var browser = await puppeteerExtra.LaunchAsync(launchOpts);
 
 var page = (await browser.PagesAsync()).Single();
 
-await page.SetUserAgentAsync("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36");
+// stealth plugin already injects evasion scripts; additional manual injection is not required
+
+// random generator used throughout the run
+var random = new Random();
+
+// set a more realistic user agent (could also be randomized)
+var userAgents = new[] {
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+};
+var ua = userAgents[random.Next(userAgents.Length)];
+await page.SetUserAgentAsync(ua);
 
 var tickersData = new Dictionary<string, Dictionary<string, object>>();
 
-var random = new Random();
+// helper to inject small delays simulating human behaviour
+async Task HumanDelayAsync(int minMs = 500, int maxMs = 1500)
+{
+    await Task.Delay(random.Next(minMs, maxMs));
+}
 
 foreach (var stockScraperBuilder in stockScraperBuilders)
 {
@@ -82,11 +106,13 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     // Console.WriteLine($"html2:{html2}");
 
     await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector());
-    await Task.Delay(random.Next(1000, 2000));
+    await HumanDelayAsync();
 
     var html = await page.GetContentAsync();
     var htmlDocument = new HtmlDocument();
     htmlDocument.LoadHtml(html);
+
+    await HumanDelayAsync();
 
     var tickerData = new Dictionary<string, object>();
 
@@ -94,6 +120,8 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
 
     foreach (var selector in selectors)
     {
+        await HumanDelayAsync();
+
         object scrapedSelectorValue = string.Empty;
 
         var htmlDocumentSingleNode = htmlDocument.DocumentNode.SelectSingleNode(selector.Value);
