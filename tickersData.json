@@ -29,6 +29,12 @@
   "VSLH11": {
     "dividend": 0.027
   },
+  "IFRI11": {
+    "dividend": 1.4
+  },
+  "RURA11": {
+    "dividend": 0.12
+  },
   "JEPI": {
     "dividend": ""
   },
