@@ -29,20 +29,14 @@
   "VSLH11": {
     "dividend": 0.027
   },
-  "IFRI11": {
-    "dividend": 1.4
-  },
-  "RURA11": {
-    "dividend": 0.12
-  },
   "JEPI": {
-    "dividend": 0.34443
+    "dividend": ""
   },
   "SPHD": {
-    "dividend": 0.20271
+    "dividend": ""
   },
   "TFLO": {
-    "dividend": 0.15075
+    "dividend": ""
   },
   "DOLAR": {
     "value": 5.18,
