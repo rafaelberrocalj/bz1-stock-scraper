@@ -7,7 +7,6 @@ using PuppeteerExtraSharp.Plugins.ExtraStealth;
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
-using System.IO;
 
 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -43,21 +42,13 @@ var stockScraperBuilders =
     .Union(scraperETFEUA);
 
 await new BrowserFetcher().DownloadAsync();
-// set up puppeteer-extra (PuppeteerExtraSharp) with stealth plugin for better evasion
 var puppeteerExtra = new PuppeteerExtra();
 puppeteerExtra.Use(new StealthPlugin());
-
-//var executablePath = configuration["PUPPETEER_EXECUTABLE_PATH"];
-//Console.WriteLine();
-//Console.WriteLine($"ENV:PUPPETEER_EXECUTABLE_PATH:{executablePath}");
 
 var launchOpts = new LaunchOptions
 {
     Headless = true,
-    Args = new[] { "--no-sandbox", "--disable-setuid-sandbox" },
-    //ExecutablePath = executablePath,
-    //ExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    //UserDataDir = "~/Library/Application Support/Google/Chrome/Default",
+    Args = ["--no-sandbox", "--disable-setuid-sandbox"],
     DefaultViewport = new ViewPortOptions
     {
         Width = 1280,
@@ -69,24 +60,19 @@ await using var browser = await puppeteerExtra.LaunchAsync(launchOpts);
 
 var page = (await browser.PagesAsync()).Single();
 
-// stealth plugin already injects evasion scripts; additional manual injection is not required
-
-// random generator used throughout the run
 var random = new Random();
 
-// set a more realistic user agent (could also be randomized)
 var userAgents = new[] {
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 };
-var ua = userAgents[random.Next(userAgents.Length)];
-await page.SetUserAgentAsync(ua);
+var userAgent = userAgents[random.Next(userAgents.Length)];
+await page.SetUserAgentAsync(userAgent);
 
 var tickersData = new Dictionary<string, Dictionary<string, object>>();
 
-// helper to inject small delays simulating human behaviour
-async Task HumanDelayAsync(int minMs = 500, int maxMs = 1500)
+async Task HumanDelayAsync(int minMs = 500, int maxMs = 5000)
 {
     await Task.Delay(random.Next(minMs, maxMs));
 }
@@ -103,7 +89,6 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
         WaitUntil = [WaitUntilNavigation.DOMContentLoaded]
     });
 
-    // debug: save HTML in case the selector isn't found, making it easier to inspect
     try
     {
         await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector(), new WaitForSelectorOptions
@@ -111,13 +96,12 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
             Timeout = 30000
         });
     }
-    catch (PuppeteerSharp.WaitTaskTimeoutException ex)
+    catch (PuppeteerSharp.WaitTaskTimeoutException)
     {
         var debugHtml = await page.GetContentAsync();
-        var debugFile = $"debug_{currentTicker}.html";
-        File.WriteAllText(debugFile, debugHtml);
-        Console.WriteLine($"[ERROR] timeout waiting for selector '{stockScraperBuilder.GetWaitForSelector()}' for {currentTicker}. HTML saved to {debugFile}");
-        throw; // rethrow so the job still fails
+        Console.WriteLine($"debugHtml: {debugHtml}");
+        Console.WriteLine($"[ERROR] timeout waiting for selector '{stockScraperBuilder.GetWaitForSelector()}' for {currentTicker}");
+        throw;
     }
 
     await HumanDelayAsync();
@@ -126,16 +110,12 @@ foreach (var stockScraperBuilder in stockScraperBuilders)
     var htmlDocument = new HtmlDocument();
     htmlDocument.LoadHtml(html);
 
-    await HumanDelayAsync();
-
     var tickerData = new Dictionary<string, object>();
 
     var selectors = stockScraperBuilder.GetSelectors();
 
     foreach (var selector in selectors)
     {
-        await HumanDelayAsync();
-
         object scrapedSelectorValue = string.Empty;
 
         var htmlDocumentSingleNode = htmlDocument.DocumentNode.SelectSingleNode(selector.Value);
