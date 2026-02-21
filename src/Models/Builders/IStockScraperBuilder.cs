@@ -5,5 +5,5 @@ public interface IStockScraperBuilder
     public string GetTicker();
     public string GetEndpoint();
     public string GetWaitForSelector();
-    public List<KeyValuePair<string, string>> GetSelectors();
+    public IEnumerable<KeyValuePair<string, List<string>>> GetSelectors();
 }

@@ -1,13 +1,11 @@
-﻿using bz1.stockscraper.Models.Scrapers;
-using HtmlAgilityPack;
+using bz1.stockscraper.Models.Configuration;
+using bz1.stockscraper.Models.Builders;
+using bz1.stockscraper.Models.Scrapers;
+using bz1.stockscraper.Services;
 using Microsoft.Extensions.Configuration;
-using PuppeteerSharp;
-using PuppeteerExtraSharp;
-using PuppeteerExtraSharp.Plugins.ExtraStealth;
-using System.Globalization;
 using System.Reflection;
-using System.Text.Json;
 
+// Build configuration
 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
@@ -15,170 +13,111 @@ var builder = new ConfigurationBuilder()
     .AddUserSecrets(Assembly.GetExecutingAssembly());
 var configuration = builder.Build();
 
-Console.WriteLine($"bz1-stock-scraper");
+// Load app settings
+var appSettings = configuration.Get<ApplicationSettings>()
+    ?? throw new InvalidOperationException("Failed to load application settings");
 
-var culturePtBr = CultureInfo.CreateSpecificCulture("pt-BR");
-var doubleDecimalStylePtBr = NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands;
+Console.WriteLine("bz1-stock-scraper");
 
-var tickersConfigurationSectionFIIs = configuration.GetSection("Tickers:FIIs");
-var tickersConfigurationSectionFIInfras = configuration.GetSection("Tickers:FIInfras");
-var tickersConfigurationSectionFIAgros = configuration.GetSection("Tickers:FIAgros");
-var tickersConfigurationSectionETFEUA = configuration.GetSection("Tickers:ETFEUA");
+// Create services
+var logger = new LoggingService(appSettings.Logging);
+var dataParsingService = new DataParsingService();
+var fileService = new FileService(logger);
+var browserService = new BrowserService(appSettings.Browser, logger);
 
-var tickersConfigurationListFIIs = tickersConfigurationSectionFIIs.Get<List<string>>() ?? [];
-var tickersConfigurationListFIInfras = tickersConfigurationSectionFIInfras.Get<List<string>>() ?? [];
-var tickersConfigurationListFIAgros = tickersConfigurationSectionFIAgros.Get<List<string>>() ?? [];
-var tickersConfigurationListETFEUA = tickersConfigurationSectionETFEUA.Get<List<string>>() ?? [];
-
-var scraperFIIs = tickersConfigurationListFIIs.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIIs().Build());
-var scraperFIInfras = tickersConfigurationListFIInfras.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIInfras().Build());
-var scraperFIAgros = tickersConfigurationListFIAgros.Select(ticker => new StatusInvestComBrScraper().WithTicker(ticker).WithFIAgros().Build());
-var scraperETFEUA = tickersConfigurationListETFEUA.Select(ticker => new StockAnalysisScraper().WithTicker(ticker).WithETF().Build());
-
-var stockScraperBuilders =
-    scraperFIIs
-    .Union(scraperFIInfras)
-    .Union(scraperFIAgros)
-    .Union(scraperETFEUA);
-
-await new BrowserFetcher().DownloadAsync();
-var puppeteerExtra = new PuppeteerExtra();
-puppeteerExtra.Use(new StealthPlugin());
-
-var launchOpts = new LaunchOptions
+try
 {
-    Headless = true,
-    Args = ["--no-sandbox", "--disable-setuid-sandbox"],
-    DefaultViewport = new ViewPortOptions
-    {
-        Width = 1280,
-        Height = 1024
-    }
-};
+    // Build scrapers from configuration
+    var scrapers = BuildScrapers(appSettings);
 
-await using var browser = await puppeteerExtra.LaunchAsync(launchOpts);
+    logger.LogInfo($"Configured to scrape {scrapers.Count} tickers");
 
-var page = (await browser.PagesAsync()).Single();
+    // Create scraper service and execute
+    var scraperService = new ScraperService(
+        browserService,
+        dataParsingService,
+        appSettings.Scrapers.ExchangeRate,
+        logger);
 
-var random = new Random();
+    var result = await scraperService.ScrapeAllAsync(scrapers);
 
-var userAgents = new[] {
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
-};
-var userAgent = userAgents[random.Next(userAgents.Length)];
-await page.SetUserAgentAsync(userAgent);
+    // Save results
+    var outputPath = Path.Combine(Directory.GetCurrentDirectory(), appSettings.Output.FilePath);
+    await fileService.SaveResultsAsync(result, outputPath);
 
-var tickersData = new Dictionary<string, Dictionary<string, object>>();
-
-async Task HumanDelayAsync(int minMs = 500, int maxMs = 5000)
-{
-    await Task.Delay(random.Next(minMs, maxMs));
+    logger.LogInfo("Scraper completed successfully");
 }
-
-foreach (var stockScraperBuilder in stockScraperBuilders)
+catch (Exception ex)
 {
-    var currentTicker = stockScraperBuilder.GetTicker();
-
-    Console.WriteLine();
-    Console.WriteLine($"ticker:{currentTicker} endpoint:{stockScraperBuilder.GetEndpoint()}");
-
-    await page.GoToAsync(stockScraperBuilder.GetEndpoint(), new NavigationOptions
-    {
-        WaitUntil = [WaitUntilNavigation.DOMContentLoaded]
-    });
-
-    try
-    {
-        await page.WaitForSelectorAsync(stockScraperBuilder.GetWaitForSelector(), new WaitForSelectorOptions
-        {
-            Timeout = 30000
-        });
-    }
-    catch (PuppeteerSharp.WaitTaskTimeoutException)
-    {
-        var debugHtml = await page.GetContentAsync();
-        Console.WriteLine($"debugHtml: {debugHtml}");
-        Console.WriteLine($"[ERROR] timeout waiting for selector '{stockScraperBuilder.GetWaitForSelector()}' for {currentTicker}");
-        throw;
-    }
-
-    await HumanDelayAsync();
-
-    var html = await page.GetContentAsync();
-    var htmlDocument = new HtmlDocument();
-    htmlDocument.LoadHtml(html);
-
-    var tickerData = new Dictionary<string, object>();
-
-    var selectors = stockScraperBuilder.GetSelectors();
-
-    foreach (var selector in selectors)
-    {
-        object scrapedSelectorValue = string.Empty;
-
-        var htmlDocumentSingleNode = htmlDocument.DocumentNode.SelectSingleNode(selector.Value);
-        if (htmlDocumentSingleNode != null)
-        {
-            var actualValue = htmlDocumentSingleNode.InnerText
-                .Trim()
-                .Replace("R$", "")
-                .Replace("$", "")
-                .Replace(".", ",");
-
-            if (double.TryParse(actualValue, doubleDecimalStylePtBr, culturePtBr, out double val))
-            {
-                scrapedSelectorValue = val;
-            }
-            else
-            {
-                scrapedSelectorValue = actualValue;
-            }
-        }
-
-        if (!tickerData.ContainsKey(selector.Key) || scrapedSelectorValue.ToString() != string.Empty)
-        {
-            tickerData[selector.Key] = scrapedSelectorValue;
-        }
-
-        Console.WriteLine($"{selector.Key}:{scrapedSelectorValue}");
-    }
-
-    tickersData.Add(currentTicker, tickerData);
+    logger.LogError("Scraper failed with error", ex);
+    throw;
+}
+finally
+{
+    await ((IAsyncDisposable)browserService).DisposeAsync();
 }
 
 Console.WriteLine();
+Console.WriteLine("scraper done, exiting");
 
-await page.GoToAsync("https://wise.com/br/currency-converter/dolar-hoje", new NavigationOptions
+// Helper method to build scrapers from configuration
+static List<IScraper> BuildScrapers(ApplicationSettings appSettings)
 {
-    WaitUntil = [WaitUntilNavigation.DOMContentLoaded]
-});
-var htmlDolar = await page.GetContentAsync();
-var htmlDocumentDolar = new HtmlDocument();
-htmlDocumentDolar.LoadHtml(htmlDolar);
-var dolarString = htmlDocumentDolar.GetElementbyId("target-input").GetAttributeValue("value", string.Empty);
-double.TryParse(dolarString, doubleDecimalStylePtBr, culturePtBr, out double dolarValue);
-tickersData["DOLAR"] = new Dictionary<string, object>
-{
-    ["value"] = dolarValue,
-    ["date"] = DateTime.Today.ToString("yyy/MM/dd")
-};
-Console.WriteLine($"DOLAR:valueBR:{dolarValue}");
+    var scrapers = new List<IScraper>();
 
-await page.CloseAsync();
-await page.DisposeAsync();
+    // StatusInvest scrapers
+    var statusInvestConfig = appSettings.Scrapers.StatusInvest;
 
-await browser.CloseAsync();
-await browser.DisposeAsync();
+    // FIIs
+    if (appSettings.Tickers.TryGetValue("FIIs", out var fiis))
+    {
+        foreach (var ticker in fiis)
+        {
+            var builder = new StatusInvestComBrScraper(statusInvestConfig, "FIIs")
+                .WithTicker(ticker)
+                .Build();
+            scrapers.Add(new ScraperAdapter(builder));
+        }
+    }
 
-var tickersFilePath = Path.Combine(Directory.GetCurrentDirectory(), "tickersData.json");
-var tickersFileContent = JsonSerializer.Serialize(tickersData, new JsonSerializerOptions
-{
-    WriteIndented = true
-});
+    // FIInfras
+    if (appSettings.Tickers.TryGetValue("FIInfras", out var fiinfras))
+    {
+        foreach (var ticker in fiinfras)
+        {
+            var builder = new StatusInvestComBrScraper(statusInvestConfig, "FIInfras")
+                .WithTicker(ticker)
+                .Build();
+            scrapers.Add(new ScraperAdapter(builder));
+        }
+    }
 
-File.WriteAllText(tickersFilePath, tickersFileContent);
+    // FIAgros
+    if (appSettings.Tickers.TryGetValue("FIAgros", out var fiagros))
+    {
+        foreach (var ticker in fiagros)
+        {
+            var builder = new StatusInvestComBrScraper(statusInvestConfig, "FIAgros")
+                .WithTicker(ticker)
+                .Build();
+            scrapers.Add(new ScraperAdapter(builder));
+        }
+    }
 
-Console.WriteLine();
-Console.WriteLine($"scraper done, exiting");
+    // StockAnalysis scrapers
+    var stockAnalysisConfig = appSettings.Scrapers.StockAnalysis;
+
+    // ETFs
+    if (appSettings.Tickers.TryGetValue("ETFEUA", out var etfs))
+    {
+        foreach (var ticker in etfs)
+        {
+            var builder = new StockAnalysisScraper(stockAnalysisConfig)
+                .WithTicker(ticker)
+                .Build();
+            scrapers.Add(new ScraperAdapter(builder));
+        }
+    }
+
+    return scrapers;
+}

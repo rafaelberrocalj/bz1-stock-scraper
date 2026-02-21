@@ -1,50 +1,52 @@
 ﻿using bz1.stockscraper.Models.Builders;
+using bz1.stockscraper.Models.Configuration;
 
 namespace bz1.stockscraper.Models.Scrapers;
 
 public class StockAnalysisScraper : IScraper
 {
-    readonly string _endpointBasePath = "https://stockanalysis.com/";
-    readonly string _waitForSelector = @"#main > div.wrsb.mt-3.py-1.sm\:mt-4 > div > h1";
+    private readonly StockAnalysisConfiguration _config;
+    private string? _ticker;
 
-    string? Ticker { get; set; }
-    string? EndpointPath { get; set; }
+    public StockAnalysisScraper(StockAnalysisConfiguration config)
+    {
+        _config = config;
+    }
 
     public StockAnalysisScraper WithTicker(string ticker)
     {
-        Ticker = ticker;
-
+        _ticker = ticker;
         return this;
     }
 
     public string GetTicker()
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(Ticker);
-
-        return Ticker!;
-    }
-
-    public StockAnalysisScraper WithETF()
-    {
-        EndpointPath = $"etf/{GetTicker()}/dividend/";
-
-        return this;
+        ArgumentException.ThrowIfNullOrWhiteSpace(_ticker);
+        return _ticker!;
     }
 
     public IStockScraperBuilder Build()
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(EndpointPath);
+        ArgumentException.ThrowIfNullOrWhiteSpace(_ticker);
+
+        if (!_config.SelectorSets.TryGetValue("ETF", out var selectorSet))
+        {
+            throw new InvalidOperationException("ETF selector set not found in configuration");
+        }
+
+        var endpoint = $"{_config.BaseEndpoint}{selectorSet.EndpointPath}".Replace("{0}", _ticker);
 
         var builder = new StockScraperBuilder(
-            GetTicker(),
-            string.Concat(_endpointBasePath, EndpointPath),
-            _waitForSelector
+            _ticker,
+            endpoint,
+            _config.WaitForSelector
         );
 
-        builder
-            .AddSelector("dividend",
-                "/html/body/div/div[1]/div[2]/main/div[2]/div/div[4]/div[1]/div[2]/table/tbody/tr[1]/td[2]"
-            );
+        // Add selectors from configuration
+        foreach (var selector in selectorSet.Selectors)
+        {
+            builder.AddSelector(selector.Key, selector.Value.ToArray());
+        }
 
         return builder;
     }

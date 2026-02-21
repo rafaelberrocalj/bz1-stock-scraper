@@ -5,7 +5,7 @@ public class StockScraperBuilder : IStockScraperBuilder
     readonly string _ticker;
     readonly string _endpoint;
     readonly string _waitForSelector;
-    readonly List<KeyValuePair<string, string>> _selectors = new List<KeyValuePair<string, string>>();
+    readonly Dictionary<string, List<string>> _selectors = new();
 
     public StockScraperBuilder(
         string ticker,
@@ -32,17 +32,19 @@ public class StockScraperBuilder : IStockScraperBuilder
         return _waitForSelector;
     }
 
-    public List<KeyValuePair<string, string>> GetSelectors()
+    public IEnumerable<KeyValuePair<string, List<string>>> GetSelectors()
     {
-        return _selectors;
+        return _selectors.Select(x => new KeyValuePair<string, List<string>>(x.Key, x.Value));
     }
 
     public StockScraperBuilder AddSelector(string name, params string[] selectors)
     {
-        foreach (var selector in selectors)
+        if (!_selectors.ContainsKey(name))
         {
-            _selectors.Add(new KeyValuePair<string, string>(name, selector));
+            _selectors[name] = new List<string>();
         }
+
+        _selectors[name].AddRange(selectors);
 
         return this;
     }

@@ -1,65 +1,54 @@
 ﻿using bz1.stockscraper.Models.Builders;
+using bz1.stockscraper.Models.Configuration;
 
 namespace bz1.stockscraper.Models.Scrapers;
 
 public class StatusInvestComBrScraper : IScraper
 {
-    readonly string _endpointBasePath = "https://statusinvest.com.br/";
-    readonly string _waitForSelector = "#earning-section > div.d-md-flex.justify-between.align-items-center.mb-2 > div.card-title > a > h3";
+    private readonly StatusInvestConfiguration _config;
+    private readonly string _selectorSetName;
+    private string? _ticker;
 
-    string? Ticker { get; set; }
-    string? EndpointPath { get; set; }
+    public StatusInvestComBrScraper(StatusInvestConfiguration config, string selectorSetName)
+    {
+        _config = config;
+        _selectorSetName = selectorSetName;
+    }
 
     public StatusInvestComBrScraper WithTicker(string ticker)
     {
-        Ticker = ticker;
-
+        _ticker = ticker;
         return this;
     }
 
     public string GetTicker()
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(Ticker);
-
-        return Ticker!;
-    }
-
-    public StatusInvestComBrScraper WithFIIs()
-    {
-        EndpointPath = $"fundos-imobiliarios/{GetTicker()}";
-
-        return this;
-    }
-
-    public StatusInvestComBrScraper WithFIInfras()
-    {
-        EndpointPath = $"fiinfras/{GetTicker()}";
-
-        return this;
-    }
-
-    public StatusInvestComBrScraper WithFIAgros()
-    {
-        EndpointPath = $"fiagros/{GetTicker()}";
-
-        return this;
+        ArgumentException.ThrowIfNullOrWhiteSpace(_ticker);
+        return _ticker!;
     }
 
     public IStockScraperBuilder Build()
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(EndpointPath);
+        ArgumentException.ThrowIfNullOrWhiteSpace(_ticker);
+
+        if (!_config.SelectorSets.TryGetValue(_selectorSetName, out var selectorSet))
+        {
+            throw new InvalidOperationException($"Selector set '{_selectorSetName}' not found in configuration");
+        }
+
+        var endpoint = $"{_config.BaseEndpoint}{selectorSet.EndpointPath}".Replace("{0}", _ticker);
 
         var builder = new StockScraperBuilder(
-            GetTicker(),
-            string.Concat(_endpointBasePath, EndpointPath),
-            _waitForSelector
+            _ticker,
+            endpoint,
+            _config.WaitForSelector
         );
 
-        builder
-            .AddSelector("dividend",
-                "/html/body/main/div[2]/div[8]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]",
-                "/html/body/main/div[2]/div[7]/div/div[7]/div/div[2]/table/tbody/tr[1]/td[4]"
-            );
+        // Add selectors from configuration
+        foreach (var selector in selectorSet.Selectors)
+        {
+            builder.AddSelector(selector.Key, selector.Value.ToArray());
+        }
 
         return builder;
     }
