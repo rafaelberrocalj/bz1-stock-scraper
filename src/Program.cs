@@ -1,5 +1,4 @@
 using bz1.stockscraper.Models.Configuration;
-using bz1.stockscraper.Models.Builders;
 using bz1.stockscraper.Models.Scrapers;
 using bz1.stockscraper.Services;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +35,6 @@ try
     var scraperService = new ScraperService(
         browserService,
         dataParsingService,
-        appSettings.Scrapers.ExchangeRate,
         logger);
 
     var result = await scraperService.ScrapeAllAsync(scrapers);

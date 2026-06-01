@@ -54,21 +54,7 @@ public class FileService : IFileService
 
             foreach (var kvp in data)
             {
-                if (kvp.Key == "DOLAR" && kvp.Value.ContainsKey("value"))
-                {
-                    if (kvp.Value["value"] is JsonElement valueElement)
-                    {
-                        result.DolarExchangeRate.Value = valueElement.GetDouble();
-                    }
-                    if (kvp.Value.ContainsKey("date") && kvp.Value["date"] is JsonElement dateElement)
-                    {
-                        result.DolarExchangeRate.Date = dateElement.GetString() ?? "";
-                    }
-                }
-                else
-                {
-                    result.Tickers[kvp.Key] = new TickerData { Values = kvp.Value };
-                }
+                result.Tickers[kvp.Key] = new TickerData { Values = kvp.Value };
             }
 
             return result;
