@@ -73,6 +73,7 @@ public class ScraperService : IScraperService
                 catch (Exception ex)
                 {
                     _logger.LogError($"Error scraping {scraper.GetTicker()}: {ex.Message}", ex);
+                    throw;
                 }
             }
 
