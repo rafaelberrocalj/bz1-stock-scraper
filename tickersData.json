@@ -1,35 +1,35 @@
 {
   "BCRI11": {
-    "dividend": 0.79
+    "dividend": 0.8
   },
   "ICRI11": {
     "dividend": 1.1
   },
   "MFII11": {
-    "dividend": 0.91
+    "dividend": 0.3
   },
   "TGAR11": {
     "dividend": 0.72
   },
   "URPR11": {
-    "dividend": 0.29
+    "dividend": 0.3
   },
   "VGHF11": {
-    "dividend": 0.07
+    "dividend": 0.06
   },
   "VSLH11": {
-    "dividend": 0.035
+    "dividend": 0.03
   },
   "IFRI11": {
-    "dividend": 1.2
+    "dividend": 1.4
   },
   "RURA11": {
     "dividend": 0.11
   },
   "JEPI": {
-    "dividend": 0.38921
+    "dividend": 0.38716
   },
   "JEPQ": {
-    "dividend": 0.56444
+    "dividend": 0.63658
   }
 }
