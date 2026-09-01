@@ -1,9 +1,9 @@
 {
   "BCRI11": {
-    "dividend": 0.8
+    "dividend": 0.75
   },
   "ICRI11": {
-    "dividend": 1.1
+    "dividend": 1.15
   },
   "MFII11": {
     "dividend": 0.3
@@ -18,18 +18,18 @@
     "dividend": 0.06
   },
   "VSLH11": {
-    "dividend": 0.03
+    "dividend": 0.022
   },
   "IFRI11": {
-    "dividend": 1.4
+    "dividend": 1.3
   },
   "RURA11": {
     "dividend": 0.11
   },
   "JEPI": {
-    "dividend": 0.38716
+    "dividend": 0.36664
   },
   "JEPQ": {
-    "dividend": 0.63658
+    "dividend": 0.70497
   }
 }
