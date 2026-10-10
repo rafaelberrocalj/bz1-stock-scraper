@@ -1,6 +1,6 @@
 {
   "BCRI11": {
-    "dividend": 0.75
+    "dividend": 0.74
   },
   "ICRI11": {
     "dividend": 1
@@ -27,6 +27,6 @@
     "dividend": 0.1
   },
   "JEPQ": {
-    "dividend": 0.68255
+    "dividend": 0.56687
   }
 }
