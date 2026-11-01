@@ -1,27 +1,27 @@
 {
   "BCRI11": {
-    "dividend": 0.74
+    "dividend": 0.7
   },
   "ICRI11": {
-    "dividend": 1
+    "dividend": 1.05
   },
   "MFII11": {
     "dividend": 0.3
   },
   "TGAR11": {
-    "dividend": 0.7
+    "dividend": 0.46
   },
   "URPR11": {
     "dividend": 0.3
   },
   "VGHF11": {
-    "dividend": 0.06
+    "dividend": 0.05
   },
   "VSLH11": {
-    "dividend": 0.024
+    "dividend": 0.02
   },
   "IFRI11": {
-    "dividend": 1.15
+    "dividend": 1
   },
   "RURA11": {
     "dividend": 0.1
